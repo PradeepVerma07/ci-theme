@@ -335,6 +335,8 @@ function ci_register_fields() {
 			),
 			ci_f( 'image', 'service_image', 'Main photo (strategy, film, CRM)' ),
 			ci_f( 'image', 'service_card_image', 'Services page card image (optional)', null, array( 'instructions' => 'Optional. If empty, the designed service composition is used on the Services page.' ) ),
+			ci_f( 'file', 'service_video', 'Service Video File (MP4/WebM)', null, array( 'instructions' => 'Upload a video file for this service card / page.' ) ),
+			ci_t( 'service_video_url', 'Service Video URL (optional MP4 link)' ),
 			ci_f( 'gallery', 'service_visual_images', 'Extra images (website: browser, phone · social/creative: post 1, post 2 · performance: phone · campaign: billboard)' ),
 			ci_tab( 'Related' ),
 			ci_f( 'relationship', 'service_related', 'Related services (leave empty for automatic)', null, array( 'post_type' => array( 'ci_service' ), 'max' => 3 ) ),

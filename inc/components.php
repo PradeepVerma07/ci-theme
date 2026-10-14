@@ -39,10 +39,12 @@ function ci_service( $post ) {
 		'tags'     => wp_list_pluck( ci_rows( 'service_tags', $id ), 'tag' ),
 		'steps'    => ci_rows( 'service_steps', $id ),
 		'tone'     => ci_get( 'service_tone', $id ),
-		'visual'   => ci_get( 'service_visual', $id ),
-		'image'    => (int) ci_get( 'service_image', $id ),
+		'visual'     => ci_get( 'service_visual', $id ),
+		'image'      => (int) ci_get( 'service_image', $id ),
 		'card_image' => (int) ci_get( 'service_card_image', $id ),
-		'images'   => array_values( array_filter( array_map( 'intval', (array) ci_get( 'service_visual_images', $id ) ) ) ),
+		'video'      => ci_get( 'service_video', $id ),
+		'video_url'  => ci_get( 'service_video_url', $id ),
+		'images'     => array_values( array_filter( array_map( 'intval', (array) ci_get( 'service_visual_images', $id ) ) ) ),
 	);
 }
 
@@ -181,18 +183,18 @@ function ci_type_label( $type ) {
 
 function ci_case_visual( $p ) {
 	if ( 'perspective' === $p['type'] ) {
-		return '<div class="editorial-art tone-' . esc_attr( $p['tone'] ) . '">' . ci_img( $p['image'], 'Editorial sector image for ' . $p['category'] ) . '<div class="art-overlay"></div><span class="art-eyebrow">' . ci_e( ci_opt( 'tpl_art_eyebrow' ) ) . '</span><div class="art-type">' . ci_e( $p['name'] ) . '</div><span class="art-bottom">' . ci_e( $p['category'] ) . ' ' . ci_star() . '</span></div>';
+		return '<div class="editorial-art tone-' . esc_attr( $p['tone'] ) . '">' . ci_img( $p['image'], 'Editorial sector image for ' . $p['category'] ) . '</div>';
 	}
 	$cap = ci_html( $p['caption'] );
 	switch ( $p['scene'] ) {
 		case 'crave':
-			return '<div class="poster-scene scene-crave">' . ci_img( $p['side'], null, 'poster side-poster' ) . ci_img( $p['front'], null, 'poster front-poster' ) . ci_star() . '</div>';
+			return '<div class="poster-scene scene-crave">' . ci_img( $p['side'], null, 'poster side-poster' ) . ci_img( $p['front'], null, 'poster front-poster' ) . '</div>';
 		case 'station':
-			return '<div class="poster-scene scene-station"><div class="signal-rings" aria-hidden="true"></div>' . ci_img( $p['front'], null, 'poster front-poster' ) . '<span class="scene-caption">' . $cap . '</span></div>';
+			return '<div class="poster-scene scene-station"><div class="signal-rings" aria-hidden="true"></div>' . ci_img( $p['front'], null, 'poster front-poster' ) . '</div>';
 		case 'vardan':
-			return '<div class="poster-scene scene-vardan">' . ci_img( $p['side'], null, 'poster side-poster' ) . ci_img( $p['front'], null, 'poster front-poster' ) . '<span class="scene-number" aria-hidden="true">' . $cap . '</span></div>';
+			return '<div class="poster-scene scene-vardan">' . ci_img( $p['side'], null, 'poster side-poster' ) . ci_img( $p['front'], null, 'poster front-poster' ) . '</div>';
 		case 'ayaan':
-			return '<div class="poster-scene scene-ayaan">' . ci_img( $p['front'], null, 'architecture-img' ) . '<div class="architecture-caption">' . $cap . '</div></div>';
+			return '<div class="poster-scene scene-ayaan">' . ci_img( $p['front'], null, 'architecture-img' ) . '</div>';
 		case 'museum':
 			return '<div class="poster-scene scene-museum"><div class="browser-frame"><div class="browser-bar"><i></i><i></i><i></i></div>' . ci_img( $p['front'] ) . '</div>' . ci_img( $p['side'], null, 'museum-cut' ) . '</div>';
 	}
@@ -200,7 +202,7 @@ function ci_case_visual( $p ) {
 }
 
 function ci_project_card( $p ) {
-	return '<article class="project-card" data-category="' . esc_attr( $p['category'] ) . '" data-name="' . esc_attr( mb_strtolower( $p['name'] ) ) . '" data-reveal><a class="project-media" href="' . esc_url( $p['url'] ) . '" aria-label="Explore ' . esc_attr( $p['name'] ) . '" data-cursor="Explore">' . ci_case_visual( $p ) . '<span class="media-arrow">' . ci_arrow() . '</span></a><div class="project-caption"><div><span class="small-label">' . ci_e( $p['category'] ) . ' / ' . ci_e( ci_type_label( $p['type'] ) ) . '</span><h3><a href="' . esc_url( $p['url'] ) . '">' . ci_e( $p['name'] ) . '</a></h3></div><span class="project-index">' . ci_e( $p['number'] ) . '</span></div></article>';
+	return '<article class="project-card" data-category="' . esc_attr( $p['category'] ) . '" data-name="' . esc_attr( mb_strtolower( $p['name'] ) ) . '" data-reveal><a class="project-media" href="' . esc_url( $p['url'] ) . '" aria-label="Explore ' . esc_attr( $p['name'] ) . '" data-cursor="Explore">' . ci_case_visual( $p ) . '</a><div class="project-caption"><div><h3><a href="' . esc_url( $p['url'] ) . '">' . ci_e( $p['name'] ) . '</a></h3><span class="small-label">' . ci_e( $p['category'] ) . '</span></div></div></article>';
 }
 
 /* ------------------------------------------------------------------ Services */
@@ -226,7 +228,7 @@ function ci_service_visual( $s ) {
 	$card_photo    = $card_photo_id ? ci_img( $card_photo_id, $s['title'] . ' card image', 'service-card-photo-img' ) : '';
 
 	$frame = function ( $inside ) use ( $s, $total ) {
-		return '<div class="service-visual visual-' . esc_attr( $s['visual'] ) . ' tone-' . esc_attr( $s['tone'] ) . '"><span class="visual-label">CI360 / ' . ci_e( mb_strtoupper( $s['group'] ) ) . '</span>' . $inside . '<span class="visual-corner">' . ci_e( $s['number'] ) . ' / ' . $total . '</span></div>';
+		return '<div class="service-visual visual-' . esc_attr( $s['visual'] ) . ' tone-' . esc_attr( $s['tone'] ) . '"><span class="visual-label">CI360 / ' . ci_e( mb_strtoupper( $s['group'] ) ) . '</span>' . $inside . '</div>';
 	};
 
 	switch ( $s['visual'] ) {
@@ -282,7 +284,7 @@ function ci_service_visual( $s ) {
 }
 
 function ci_service_card( $s ) {
-	return '<article class="service-card" data-reveal><a href="' . esc_url( $s['url'] ) . '" class="service-card-media" data-cursor="Discover">' . ci_service_visual( $s ) . '<span class="media-arrow">' . ci_arrow() . '</span></a><div class="service-card-body"><span class="small-label">' . ci_e( $s['number'] ) . ' / ' . ci_e( mb_strtoupper( $s['group'] ) ) . '</span><h3><a href="' . esc_url( $s['url'] ) . '">' . ci_e( $s['title'] ) . '</a></h3><p>' . ci_e( $s['summary'] ) . '</p></div></article>';
+	return '<article class="service-card" data-reveal><a href="' . esc_url( $s['url'] ) . '" class="service-card-media" data-cursor="Discover">' . ci_service_visual( $s ) . '</a><div class="service-card-body"><span class="small-label">' . ci_e( mb_strtoupper( $s['group'] ) ) . '</span><h3><a href="' . esc_url( $s['url'] ) . '">' . ci_e( $s['title'] ) . '</a></h3><p>' . ci_e( $s['summary'] ) . '</p></div></article>';
 }
 
 /** Premium, fully editable card used by the Services page grid. */
@@ -297,9 +299,22 @@ function ci_service_grid_card( $s, $settings = array() ) {
 	}
 
 	$group = $s['group'] ? mb_strtoupper( $s['group'] ) : 'CAPABILITY';
-	$media = $s['card_image']
-		? ci_img( $s['card_image'], $s['title'], 'ci360-service-card-photo' )
-		: ci_service_visual( $s );
+	$video_url = '';
+	if ( ! empty( $s['video_url'] ) ) {
+		$video_url = $s['video_url'];
+	} elseif ( ! empty( $s['video'] ) ) {
+		$video_url = is_numeric( $s['video'] ) ? wp_get_attachment_url( (int) $s['video'] ) : ( is_array( $s['video'] ) ? ( $s['video']['url'] ?? '' ) : $s['video'] );
+	}
+
+	if ( $video_url ) {
+		$poster = $s['card_image'] ? wp_get_attachment_image_url( $s['card_image'], 'large' ) : ( $s['image'] ? wp_get_attachment_image_url( $s['image'], 'large' ) : '' );
+		$poster_attr = $poster ? ' poster="' . esc_url( $poster ) . '"' : '';
+		$media = '<video src="' . esc_url( $video_url ) . '"' . $poster_attr . ' autoplay loop muted playsinline class="ci360-service-card-photo ci360-service-card-video" style="width:100%;height:100%;object-fit:cover;"></video>';
+	} elseif ( $s['card_image'] ) {
+		$media = ci_img( $s['card_image'], $s['title'], 'ci360-service-card-photo' );
+	} else {
+		$media = ci_service_visual( $s );
+	}
 	$tags = '';
 	if ( $show_tags && ! empty( $s['tags'] ) ) {
 		$tags = '<span class="ci360-service-card-tags">';
@@ -312,7 +327,7 @@ function ci_service_grid_card( $s, $settings = array() ) {
 	$cta     = $button ? '<a class="ci360-service-card-link" href="' . esc_url( $s['url'] ) . '" aria-label="' . esc_attr( $button . ': ' . $s['title'] ) . '"><span class="ci360-service-card-cta">' . ci_e( $button ) . ' ' . ci_arrow() . '</span></a>' : '';
 
 	return '<article class="ci360-service-card ci360-service-card--' . esc_attr( $layout ) . '" data-reveal>'
-		. '<a class="ci360-service-card-media" href="' . esc_url( $s['url'] ) . '" data-cursor="Discover"><span class="ci360-service-card-visual">' . $media . '</span><span class="ci360-service-card-index">' . ci_e( $s['number'] ) . '</span></a>'
+		. '<a class="ci360-service-card-media" href="' . esc_url( $s['url'] ) . '" data-cursor="Discover"><span class="ci360-service-card-visual">' . $media . '</span></a>'
 		. '<div class="ci360-service-card-content"><span class="ci360-service-card-kicker">' . ci_e( $group ) . '</span><h3><a href="' . esc_url( $s['url'] ) . '">' . ci_e( $s['title'] ) . '</a></h3>' . $summary . $tags . $cta . '</div>'
 		. '</article>';
 }
@@ -327,15 +342,14 @@ function ci_article_card( $a, $i ) {
 
 	$num_str  = ( $i + 1 ) < 10 ? '0' . ( $i + 1 ) : (string) ( $i + 1 );
 	$kicker   = ! empty( $a['kicker'] ) ? $a['kicker'] : 'Article';
-	$read_str = ! empty( $a['read'] ) ? ( false !== strpos( (string) $a['read'], 'read' ) ? $a['read'] : $a['read'] . ' read' ) : '';
 
-	$cover_inner = $img_html . '<div class="article-cover-overlay"></div><span class="cover-index">' . ci_e( $kicker ) . '</span>';
+	$cover_inner = $img_html . '<span class="cover-index">' . ci_e( $kicker ) . '</span>';
 
 	return '<article class="article-card has-featured-image" data-reveal>'
 		. '<a href="' . esc_url( $a['url'] ) . '" class="article-cover tone-' . esc_attr( ! empty( $a['tone'] ) ? $a['tone'] : 'blue' ) . '" data-cursor="Read">'
 		. $cover_inner
 		. '</a>'
-		. '<div class="article-meta"><span>' . ci_e( $kicker ) . '</span>' . ( $read_str ? '<span>' . ci_e( $read_str ) . '</span>' : '' ) . '</div>'
+		. '<div class="article-meta"><span>' . ci_e( $kicker ) . '</span></div>'
 		. '<h3><a href="' . esc_url( $a['url'] ) . '">' . ci_e( $a['title'] ) . ' ' . ci_arrow() . '</a></h3>'
 		. '</article>';
 }
@@ -376,7 +390,7 @@ function ci_faq_group( $field, $post_id, $fallback_slug ) {
 function ci_process() {
 	$steps = '';
 	foreach ( ci_rows( 'opt_process_steps', 'option' ) as $i => $r ) {
-		$steps .= '<article class="process-step" data-reveal><div><span>0' . ( $i + 1 ) . '</span>' . ci_arrow() . '</div><h3>' . ci_e( $r['title'] ) . '</h3><p>' . ci_e( $r['text'] ) . '</p></article>';
+		$steps .= '<article class="process-step" data-reveal><h3>' . ci_e( $r['title'] ) . '</h3><p>' . ci_e( $r['text'] ) . '</p></article>';
 	}
 	return '<section class="process-section section"><div class="wrap"><div class="section-heading">' . ci_sec_label( 'opt_process', 'option' ) . '<h2 data-reveal>' . ci_html( ci_opt( 'opt_process_heading' ) ) . '</h2><p>' . ci_e( ci_opt( 'opt_process_intro' ) ) . '</p></div><div class="process-grid">' . $steps . '</div></div></section>';
 }
@@ -468,7 +482,7 @@ function ci_brand_strip( $label = null, $logos = null ) {
 function ci_service_preview_templates( $services ) {
 	$out = '';
 	foreach ( $services as $s ) {
-		$out .= '<template data-service-template="' . esc_attr( $s['slug'] ) . '">' . ci_service_visual( $s ) . '<p>' . ci_e( $s['headline'] ) . '</p></template>';
+		$out .= '<template data-service-template="' . esc_attr( $s['slug'] ) . '">' . ci_service_visual( $s ) . '</template>';
 	}
 	return $out;
 }
@@ -502,6 +516,9 @@ function ci_is_current( $url ) {
 function ci_social_icon_svg( $label, $url = '' ) {
 	$str = strtolower( (string) $label . ' ' . (string) $url );
 
+	if ( false !== strpos( $str, 'email' ) || false !== strpos( $str, 'mail' ) || false !== strpos( $str, 'gmail' ) ) {
+		return '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>';
+	}
 	if ( false !== strpos( $str, 'facebook' ) || false !== strpos( $str, 'fb.com' ) ) {
 		return '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>';
 	}

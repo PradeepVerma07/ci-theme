@@ -26,8 +26,40 @@ function ci_section( $id, $settings = array() ) {
 	if ( ! function_exists( $fn ) ) {
 		return '';
 	}
-	$s = array_merge( ci_section_defaults( $id ), (array) $settings );
-	return (string) call_user_func( $fn, $s );
+	$s    = array_merge( ci_section_defaults( $id ), (array) $settings );
+	$html = (string) call_user_func( $fn, $s );
+
+	$styles = array();
+	if ( isset( $s['margin_top'] ) && '' !== (string) $s['margin_top'] ) {
+		$val      = is_numeric( $s['margin_top'] ) ? $s['margin_top'] . 'px' : $s['margin_top'];
+		$styles[] = 'margin-top:' . esc_attr( $val ) . ' !important;';
+	}
+	if ( isset( $s['margin_bottom'] ) && '' !== (string) $s['margin_bottom'] ) {
+		$val      = is_numeric( $s['margin_bottom'] ) ? $s['margin_bottom'] . 'px' : $s['margin_bottom'];
+		$styles[] = 'margin-bottom:' . esc_attr( $val ) . ' !important;';
+	}
+	if ( isset( $s['padding_top'] ) && '' !== (string) $s['padding_top'] ) {
+		$val      = is_numeric( $s['padding_top'] ) ? $s['padding_top'] . 'px' : $s['padding_top'];
+		$styles[] = 'padding-top:' . esc_attr( $val ) . ' !important;';
+	}
+	if ( isset( $s['padding_bottom'] ) && '' !== (string) $s['padding_bottom'] ) {
+		$val      = is_numeric( $s['padding_bottom'] ) ? $s['padding_bottom'] . 'px' : $s['padding_bottom'];
+		$styles[] = 'padding-bottom:' . esc_attr( $val ) . ' !important;';
+	}
+
+	if ( ! empty( $styles ) ) {
+		$style_str = implode( ' ', $styles );
+		if ( preg_match( '/^<([a-z0-9]+)\b([^>]*)>/i', $html, $m ) ) {
+			if ( false !== strpos( $m[2], 'style="' ) ) {
+				$new_tag = preg_replace( '/style="([^"]*)"/i', 'style="$1 ' . $style_str . '"', $m[0] );
+			} else {
+				$new_tag = '<' . $m[1] . ' style="' . $style_str . '"' . $m[2] . '>';
+			}
+			$html = substr_replace( $html, $new_tag, 0, strlen( $m[0] ) );
+		}
+	}
+
+	return $html;
 }
 
 /** id="…" attribute from an anchor setting. */
@@ -73,11 +105,14 @@ function ci_s_page_url( $key, $fallback ) {
 function ci_s_home_hero( $s ) {
 	$positions = array( array( 'collage-left', '-12' ), array( 'collage-main', '8' ), array( 'collage-right', '17' ) );
 	$collage   = '';
-	foreach ( array_slice( ci_s_rows( $s['collage'] ), 0, 3 ) as $i => $row ) {
-		$pid      = ci_s_post( $row['project'] ?? '', 'ci_project' );
-		$collage .= '<a href="' . esc_url( $pid ? get_permalink( $pid ) : ci_s_page_url( 'work', '/work/' ) ) . '" class="collage-frame ' . $positions[ $i ][0] . '" data-depth="' . $positions[ $i ][1] . '">' . ci_img( $row['image'] ?? '', 'Explore ' . ( $pid ? ci_title( $pid ) : '' ) . ' creative', '', true ) . '<span>' . ci_e( $row['caption'] ?? '' ) . '</span></a>';
+	$rows      = ci_s_rows( $s['collage'] );
+	foreach ( $rows as $i => $row ) {
+		$pid       = ci_s_post( $row['project'] ?? '', 'ci_project' );
+		$pos_class = isset( $positions[ $i ] ) ? $positions[ $i ][0] : 'is-hidden';
+		$depth     = isset( $positions[ $i ] ) ? $positions[ $i ][1] : '10';
+		$collage  .= '<a href="' . esc_url( $pid ? get_permalink( $pid ) : ci_s_page_url( 'case-studies', '/case-studies/' ) ) . '" class="collage-frame ' . $pos_class . '" data-depth="' . $depth . '">' . ci_img( $row['image'] ?? '', 'Explore ' . ( $pid ? ci_title( $pid ) : '' ) . ' creative', '', true ) . '<span>' . ci_e( $row['caption'] ?? '' ) . '</span></a>';
 	}
-	return '<section class="hero wrap"><div class="hero-copy"><div class="hero-eyebrow"><i></i> ' . ci_e( $s['eyebrow'] ) . '</div><h1 class="hero-title"><span class="line">' . ci_e( $s['title_1'] ) . '</span><span class="line">' . ci_e( $s['title_2'] ) . '</span><span class="line accent">' . ci_e( $s['title_3'] ) . '<svg viewBox="0 0 540 35" aria-hidden="true"><path d="M5 25C125 2 319 0 533 15M35 33C159 12 340 8 490 17"/></svg></span></h1><p class="hero-description">' . ci_e( $s['description'] ) . '</p><div class="hero-actions">' . ci_btn( $s['cta'], $s['cta_link'] ) . '<a href="' . esc_attr( $s['secondary_link'] ) . '" class="text-link">' . ci_e( $s['secondary'] ) . ' ' . ci_arrow( 'se' ) . '</a></div></div><div class="hero-collage" aria-label="Selected CI360 campaign imagery"><div class="collage-coordinate">' . ci_e( $s['collage_label'] ) . '</div><div class="collage-ring" aria-hidden="true"></div>' . $collage . '<div class="hero-sticker" aria-hidden="true">' . ci_star() . '<b>' . ci_html( $s['sticker'] ) . '</b></div><div class="collage-caption"><span>' . ci_e( $s['collage_caption'] ) . '</span><span>' . ci_e( $s['collage_badge'] ) . '</span></div></div><div class="hero-bottom"><span>' . ci_e( $s['bottom_left'] ) . '</span><a href="' . esc_attr( $s['secondary_link'] ) . '">' . ci_e( $s['bottom_right'] ) . ' <span>&darr;</span></a></div></section>';
+	return '<section class="hero wrap"><div class="hero-copy"><div class="hero-eyebrow"><i></i> ' . ci_e( $s['eyebrow'] ) . '</div><h1 class="hero-title"><span class="line">' . ci_e( $s['title_1'] ) . '</span><span class="line">' . ci_e( $s['title_2'] ) . '</span><span class="line accent">' . ci_e( $s['title_3'] ) . '<svg viewBox="0 0 540 35" aria-hidden="true"><path d="M5 25C125 2 319 0 533 15M35 33C159 12 340 8 490 17"/></svg></span></h1><p class="hero-description">' . ci_e( $s['description'] ) . '</p><div class="hero-actions">' . ci_btn( $s['cta'], $s['cta_link'] ) . '<a href="' . esc_attr( $s['secondary_link'] ) . '" class="text-link">' . ci_e( $s['secondary'] ) . ' ' . ci_arrow( 'se' ) . '</a></div></div><div class="hero-collage" aria-label="Selected CI360 campaign imagery"><div class="collage-coordinate">' . ci_e( $s['collage_label'] ) . '</div><div class="collage-ring" aria-hidden="true"></div>' . $collage . '<div class="collage-caption"><span>' . ci_e( $s['collage_caption'] ) . '</span><span>' . ci_e( $s['collage_badge'] ) . '</span></div></div><div class="hero-bottom"><span>' . ci_e( $s['bottom_left'] ) . '</span><a href="' . esc_attr( $s['secondary_link'] ) . '">' . ci_e( $s['bottom_right'] ) . ' <span>&darr;</span></a></div></section>';
 }
 
 function ci_s_brand_strip( $s ) {
@@ -95,14 +130,20 @@ function ci_s_home_work( $s ) {
 	$stack = '';
 	foreach ( array_values( $ids ) as $i => $pid ) {
 		$p      = ci_project( $pid );
-		$stack .= '<article class="showcase tone-' . esc_attr( $p['tone'] ) . '" data-stack><a class="showcase-media" href="' . esc_url( $p['url'] ) . '" data-cursor="Explore">' . ci_case_visual( $p ) . '</a><div class="showcase-copy"><span class="small-label">0' . ( $i + 1 ) . ' / ' . ci_e( mb_strtoupper( $p['category'] ) ) . '</span><h3>' . ci_e( $p['name'] ) . '</h3><p class="showcase-headline">' . ci_e( $p['headline'] ) . '</p><p>' . ci_e( $p['summary'] ) . '</p><a class="text-link" href="' . esc_url( $p['url'] ) . '">' . ci_e( $s['card_link'] ) . ' ' . ci_arrow() . '</a></div></article>';
+		$stack .= '<article class="showcase tone-' . esc_attr( $p['tone'] ) . '" data-stack><a class="showcase-media" href="' . esc_url( $p['url'] ) . '" data-cursor="Explore">' . ci_case_visual( $p ) . '</a><div class="showcase-copy"><h3>' . ci_e( $p['name'] ) . '</h3><span class="small-label">' . ci_e( mb_strtoupper( $p['category'] ) ) . '</span><p class="showcase-headline">' . ci_e( $p['headline'] ) . '</p><p>' . ci_e( $p['summary'] ) . '</p><a class="text-link" href="' . esc_url( $p['url'] ) . '">' . ci_e( $s['card_link'] ) . ' ' . ci_arrow() . '</a></div></article>';
 	}
 	$anchor = $s['anchor'] ? ' id="' . esc_attr( $s['anchor'] ) . '"' : '';
-	return '<section class="work-section section"' . $anchor . '><div class="wrap"><div class="section-heading heading-row">' . ci_s_label( $s ) . '<h2 data-reveal>' . ci_html( $s['heading'] ) . '</h2><p>' . ci_e( $s['intro'] ) . '</p></div><div class="work-stack">' . $stack . '</div><div class="work-end"><span>' . ci_e( $s['end_text'] ) . '</span>' . ci_btn( sprintf( $s['button'], ci_count( 'ci_project' ) ), ci_s_link( $s['button_link'], 'work' ), 'outline' ) . '</div></div></section>';
+	return '<section class="work-section section"' . $anchor . '><div class="wrap"><div class="section-heading heading-row">' . ci_s_label( $s ) . '<h2 data-reveal>' . ci_html( $s['heading'] ) . '</h2><p>' . ci_e( $s['intro'] ) . '</p></div><div class="work-stack">' . $stack . '</div><div class="work-end"><span>' . ci_e( $s['end_text'] ) . '</span>' . ci_btn( sprintf( $s['button'], ci_count( 'ci_project' ) ), ci_s_link( $s['button_link'], 'case-studies' ), 'outline' ) . '</div></div></section>';
 }
 
 /** Links to core pages follow the page if its slug changes. */
 function ci_s_link( $url, $page_key ) {
+	if ( 'work' === $page_key ) {
+		$page_key = 'case-studies';
+	}
+	if ( '/work/' === $url || '/work' === $url ) {
+		$url = '/case-studies/';
+	}
 	$default = '/' . $page_key . '/';
 	if ( $url === $default || '' === $url ) {
 		return ci_s_page_url( $page_key, $default );
@@ -115,9 +156,9 @@ function ci_s_home_capabilities( $s ) {
 	$cap_services = array_slice( $services, 0, max( 1, (int) $s['count'] ) );
 	$rows         = '';
 	foreach ( $cap_services as $sv ) {
-		$rows .= '<a class="capability-row" href="' . esc_url( $sv['url'] ) . '" data-service-preview="' . esc_attr( $sv['slug'] ) . '"><span>' . ci_e( $sv['number'] ) . '</span><div><h3>' . ci_e( $sv['title'] ) . '</h3><p>' . ci_e( implode( ' / ', array_slice( $sv['tags'], 0, 3 ) ) ) . '</p></div>' . ci_arrow() . '</a>';
+		$rows .= '<a class="capability-row" href="' . esc_url( $sv['url'] ) . '" data-service-preview="' . esc_attr( $sv['slug'] ) . '"><div><h3>' . ci_e( $sv['title'] ) . '</h3><p>' . ci_e( implode( ' / ', array_slice( $sv['tags'], 0, 3 ) ) ) . '</p></div>' . ci_arrow() . '</a>';
 	}
-	return '<section class="capabilities section dark-section"><div class="wrap"><div class="section-heading heading-row">' . ci_s_label( $s ) . '<h2 data-reveal>' . ci_html( $s['heading'] ) . '</h2><p>' . ci_e( $s['intro'] ) . '</p></div><div class="capability-layout"><div class="capability-list">' . $rows . '<a class="all-services" href="' . esc_url( ci_s_link( $s['all_link'], 'services' ) ) . '">' . ci_e( sprintf( $s['all_text'], count( $services ) ) ) . ' ' . ci_arrow() . '</a></div><div class="capability-preview" aria-hidden="true">' . ( $services ? ci_service_visual( $services[0] ) : '' ) . '<p>' . ci_e( $s['preview'] ) . '</p></div></div></div>' . ci_service_preview_templates( $cap_services ) . '</section>';
+	return '<section class="capabilities section dark-section"><div class="wrap"><div class="section-heading heading-row">' . ci_s_label( $s ) . '<h2 data-reveal>' . ci_html( $s['heading'] ) . '</h2><p>' . ci_e( $s['intro'] ) . '</p></div><div class="capability-layout"><div class="capability-list">' . $rows . '<a class="all-services" href="' . esc_url( ci_s_link( $s['all_link'], 'services' ) ) . '">' . ci_e( sprintf( $s['all_text'], count( $services ) ) ) . ' ' . ci_arrow() . '</a></div><div class="capability-preview" aria-hidden="true">' . ( $services ? ci_service_visual( $services[0] ) : '' ) . '</div></div></div>' . ci_service_preview_templates( $cap_services ) . '</section>';
 }
 
 function ci_s_home_about( $s ) {
@@ -137,7 +178,7 @@ function ci_s_word_marquee( $s ) {
 function ci_s_process( $s ) {
 	$steps = '';
 	foreach ( ci_s_rows( $s['steps'] ) as $i => $r ) {
-		$steps .= '<article class="process-step" data-reveal><div><span>0' . ( $i + 1 ) . '</span>' . ci_arrow() . '</div><h3>' . ci_e( $r['title'] ?? '' ) . '</h3><p>' . ci_e( $r['text'] ?? '' ) . '</p></article>';
+		$steps .= '<article class="process-step" data-reveal><h3>' . ci_e( $r['title'] ?? '' ) . '</h3><p>' . ci_e( $r['text'] ?? '' ) . '</p></article>';
 	}
 	return '<section class="process-section section"><div class="wrap"><div class="section-heading">' . ci_s_label( $s ) . '<h2 data-reveal>' . ci_html( $s['heading'] ) . '</h2><p>' . ci_e( $s['intro'] ) . '</p></div><div class="process-grid">' . $steps . '</div></div></section>';
 }
@@ -174,7 +215,27 @@ function ci_s_faq( $s ) {
 }
 
 function ci_s_compact_cta( $s ) {
-	return '<section class="compact-cta wrap" data-reveal><h2>' . ci_html( $s['text'] ) . '</h2>' . ci_btn( $s['button'], ci_s_link( $s['button_link'], 'contact' ) ) . '</section>';
+	return '<section class="compact-cta wrap" data-reveal><h2' . ci_s_heading_size_attr( $s ) . '>' . ci_html( $s['text'] ) . '</h2>' . ci_btn( $s['button'], ci_s_link( $s['button_link'], 'contact' ) ) . '</section>';
+}
+
+/** Heading font size inline style attribute from settings. */
+function ci_s_heading_size_attr( $s, $key = 'heading_font_size' ) {
+	$val = trim( (string) ( $s[ $key ] ?? $s['title_font_size'] ?? $s['heading_size'] ?? '' ) );
+	if ( '' === $val ) {
+		return '';
+	}
+	$size = is_numeric( $val ) ? $val . 'px' : $val;
+	return ' style="font-size:' . esc_attr( $size ) . ' !important;"';
+}
+
+/** Text/Body font size inline style attribute from settings. */
+function ci_s_text_size_attr( $s, $key = 'text_font_size' ) {
+	$val = trim( (string) ( $s[ $key ] ?? $s['body_font_size'] ?? $s['intro_font_size'] ?? '' ) );
+	if ( '' === $val ) {
+		return '';
+	}
+	$size = is_numeric( $val ) ? $val . 'px' : $val;
+	return ' style="font-size:' . esc_attr( $size ) . ' !important;"';
 }
 
 /* ================================================================ ABOUT & GENERIC */
@@ -184,7 +245,7 @@ function ci_s_page_hero( $s ) {
 	if ( 'yes' === $s['show_image'] || true === $s['show_image'] ) {
 		$image = '<div class="about-wide-image" data-reveal>' . ci_img( $s['image'], null, '', true ) . '<span class="image-note">' . ci_e( $s['image_note'] ) . '</span><div class="wide-image-type" aria-hidden="true">' . ci_html( $s['image_type'] ) . '</div></div>';
 	}
-	return '<section class="page-hero wrap">' . ci_breadcrumb( $s['crumb'] ) . ci_s_label( $s ) . '<h1 class="display" data-title>' . ci_html( $s['heading'] ) . '</h1><div class="hero-intro-row"><p>' . ci_e( $s['intro_short'] ) . '</p><p>' . ci_e( $s['intro'] ) . '</p></div>' . $image . '</section>';
+	return '<section class="page-hero wrap">' . ci_breadcrumb( $s['crumb'] ) . ci_s_label( $s ) . '<h1 class="display"' . ci_s_heading_size_attr( $s ) . ' data-title>' . ci_html( $s['heading'] ) . '</h1><div class="hero-intro-row"' . ci_s_text_size_attr( $s ) . '><p>' . ci_e( $s['intro_short'] ) . '</p><p>' . ci_e( $s['intro'] ) . '</p></div>' . $image . '</section>';
 }
 
 function ci_s_about_compass( $s ) {
@@ -192,11 +253,11 @@ function ci_s_about_compass( $s ) {
 	foreach ( ci_s_rows( $s['values'] ) as $r ) {
 		$values .= '<li>' . ci_e( $r['value'] ?? '' ) . '</li>';
 	}
-	return '<section class="section wrap"><div class="section-heading">' . ci_s_label( $s ) . '<h2 data-reveal>' . ci_html( $s['heading'] ) . '</h2></div><div class="purpose-grid"><article class="tone-orange" data-reveal>' . ci_star() . '<span class="small-label">01 / VISION</span><h3>' . ci_e( $s['vision_title'] ) . '</h3><p>' . ci_e( $s['vision'] ) . '</p></article><article class="tone-lilac" data-reveal>' . ci_arrow() . '<span class="small-label">02 / MISSION</span><h3>' . ci_e( $s['mission_title'] ) . '</h3><p>' . ci_e( $s['mission'] ) . '</p></article><article class="tone-mint" data-reveal><div class="values-symbol" aria-hidden="true">+</div><span class="small-label">03 / VALUES</span><h3>' . ci_e( $s['values_title'] ) . '</h3><ul>' . $values . '</ul></article></div></section>';
+	return '<section class="section wrap"><div class="section-heading">' . ci_s_label( $s ) . '<h2 data-reveal' . ci_s_heading_size_attr( $s ) . '>' . ci_html( $s['heading'] ) . '</h2></div><div class="purpose-grid"' . ci_s_text_size_attr( $s ) . '><article class="tone-orange" data-reveal><span class="small-label">VISION</span><h3>' . ci_e( $s['vision_title'] ) . '</h3><p>' . ci_e( $s['vision'] ) . '</p></article><article class="tone-lilac" data-reveal><span class="small-label">MISSION</span><h3>' . ci_e( $s['mission_title'] ) . '</h3><p>' . ci_e( $s['mission'] ) . '</p></article><article class="tone-mint" data-reveal><span class="small-label">VALUES</span><h3>' . ci_e( $s['values_title'] ) . '</h3><ul>' . $values . '</ul></article></div></section>';
 }
 
 function ci_s_about_belief( $s ) {
-	return '<section class="belief-section dark-section section"><div class="wrap belief-grid"><div>' . ci_s_label( $s ) . '<h2 data-reveal>' . ci_html( $s['heading'] ) . '</h2>' . ci_btn( $s['button'], ci_s_link( $s['button_link'], 'founders' ), 'light' ) . '</div><div>' . ci_paragraphs( $s['text'], 'large-copy' ) . '</div></div></section>';
+	return '<section class="belief-section dark-section section"><div class="wrap belief-grid"><div>' . ci_s_label( $s ) . '<h2 data-reveal' . ci_s_heading_size_attr( $s ) . '>' . ci_html( $s['heading'] ) . '</h2>' . ci_btn( $s['button'], ci_s_link( $s['button_link'], 'founders' ), 'light' ) . '</div><div' . ci_s_text_size_attr( $s ) . '>' . ci_paragraphs( $s['text'], 'large-copy' ) . '</div></div></section>';
 }
 
 function ci_s_about_journey( $s ) {
@@ -337,10 +398,10 @@ function ci_s_about_team( $s ) {
 			}
 		}
 		$photo = $src ? '<img class="team-member-photo" src="' . esc_url( $src ) . '" alt="' . esc_attr( $name ) . '" loading="lazy" />' : '<div class="team-photo-fallback"><span>' . esc_html( mb_substr( $name, 0, 2 ) ) . '</span></div>';
-		$team .= '<div class="team-member-card" data-reveal><div class="team-member-photo-wrap">' . $photo . '</div><div class="team-member-info"><span class="team-index">' . ci_pad( $i + 1 ) . '</span><h3>' . ci_e( $name ) . '</h3><p>' . ci_e( ci_get( 'team_role', $m->ID ) ) . '</p></div></div>';
+		$team .= '<div class="team-member-card" data-reveal><div class="team-member-photo-wrap">' . $photo . '</div><div class="team-member-info"><h3>' . ci_e( $name ) . '</h3><p' . ci_s_text_size_attr( $s ) . '>' . ci_e( ci_get( 'team_role', $m->ID ) ) . '</p></div></div>';
 	}
 	$anchor = $s['anchor'] ? ' id="' . esc_attr( $s['anchor'] ) . '"' : '';
-	return '<section class="team-section section wrap"' . $anchor . '><div class="section-heading heading-row">' . ci_s_label( $s ) . '<h2 data-reveal>' . ci_html( $s['heading'] ) . '</h2><p>' . ci_e( $s['intro'] ) . '</p></div><div class="team-roster">' . $team . '</div></section>';
+	return '<section class="team-section section wrap"' . $anchor . '><div class="section-heading heading-row">' . ci_s_label( $s ) . '<h2 data-reveal' . ci_s_heading_size_attr( $s ) . '>' . ci_html( $s['heading'] ) . '</h2><p' . ci_s_text_size_attr( $s ) . '>' . ci_e( $s['intro'] ) . '</p></div><div class="team-roster">' . $team . '</div></section>';
 }
 
 function ci_s_about_industries( $s ) {
@@ -348,37 +409,98 @@ function ci_s_about_industries( $s ) {
 	foreach ( ci_s_rows( $s['industries'] ) as $i => $r ) {
 		$out .= '<span data-reveal>' . ci_pad( $i + 1 ) . ' ' . ci_e( $r['name'] ?? '' ) . '</span>';
 	}
-	return '<section class="section industry-section wrap"><div class="section-heading">' . ci_s_label( $s ) . '<h2 data-reveal>' . ci_html( $s['heading'] ) . '</h2></div><div class="industry-pills">' . $out . '</div></section>';
+	return '<section class="section industry-section wrap"><div class="section-heading">' . ci_s_label( $s ) . '<h2 data-reveal' . ci_s_heading_size_attr( $s ) . '>' . ci_html( $s['heading'] ) . '</h2></div><div class="industry-pills"' . ci_s_text_size_attr( $s ) . '>' . $out . '</div></section>';
 }
 
 /* ================================================================ FOUNDERS */
 
 function ci_s_founders_profiles( $s ) {
 	$profiles = '';
-	foreach ( ci_posts( 'ci_team', array( 'meta_key' => 'team_is_founder', 'meta_value' => '1' ) ) as $i => $f ) {
-		$fid      = $f->ID;
-		$name     = ci_title( $f );
-		$role     = ci_get( 'founder_role', $fid );
-		$portrait = (int) ci_get( 'team_photo', $fid );
-		if ( ! $portrait ) {
-			$portrait = (int) ci_get( 'founder_portrait', $fid );
+	$rows     = ci_s_rows( $s['founders'] ?? array() );
+
+	if ( ! empty( $rows ) ) {
+		foreach ( $rows as $r ) {
+			$name     = $r['name'] ?? '';
+			$role     = $r['role'] ?? '';
+			$portrait = $r['portrait'] ?? '';
+			$linkedin = ! empty( $r['linkedin'] ) ? $r['linkedin'] : 'https://www.linkedin.com/';
+			$email    = ! empty( $r['email'] ) ? $r['email'] : 'info@ci360degrees.com';
+			$quote    = $r['quote'] ?? '';
+			$tone     = ! empty( $r['tone'] ) ? $r['tone'] : 'blue';
+
+			$portrait_img = '';
+			if ( $portrait ) {
+				$portrait_img = is_numeric( $portrait )
+					? '<img class="founder-portrait" src="' . esc_url( wp_get_attachment_image_url( (int) $portrait, 'full' ) ) . '" alt="' . esc_attr( $name ) . ' - portrait" loading="lazy" data-external-portrait>'
+					: ( is_array( $portrait ) && ! empty( $portrait['url'] )
+						? '<img class="founder-portrait" src="' . esc_url( $portrait['url'] ) . '" alt="' . esc_attr( $name ) . ' - portrait" loading="lazy" data-external-portrait>'
+						: ( is_string( $portrait ) ? '<img class="founder-portrait" src="' . esc_url( ci_img_url( $portrait ) ) . '" alt="' . esc_attr( $name ) . ' - portrait" loading="lazy" data-external-portrait>' : '' ) );
+			}
+
+			if ( ! $portrait_img ) {
+				$photos = ci_team_fallback_photos();
+				foreach ( $photos as $pn => $file ) {
+					if ( 0 === strcasecmp( $pn, $name ) || 0 === strcasecmp( strtok( $pn, ' ' ), strtok( $name, ' ' ) ) ) {
+						$src          = CI360_URI . '/assets/images/team/' . $file;
+						$portrait_img = '<img class="founder-portrait" src="' . esc_url( $src ) . '" alt="' . esc_attr( $name ) . ' - portrait" loading="lazy" data-external-portrait>';
+						break;
+					}
+				}
+			}
+
+			$initials = ci_initials( $name );
+			$socials  = '<div class="founder-socials">'
+				. '<a href="' . esc_url( $linkedin ) . '" target="_blank" rel="noopener noreferrer" class="founder-social-icon" title="LinkedIn">' . ci_social_icon_svg( 'linkedin' ) . '</a>'
+				. '<a href="mailto:' . esc_attr( $email ) . '" class="founder-social-icon" title="Email / Gmail">' . ci_social_icon_svg( 'email' ) . '</a>'
+				. '</div>';
+
+			$profiles .= '<article class="founder-profile" data-reveal><div class="founder-photo tone-' . esc_attr( $tone ) . '"><div class="founder-fallback">' . ci_img( $s['fallback_image'], 'Creative studio environment' ) . '<div><span>' . ci_e( $initials ) . '</span><p>CREATIVE LENS</p></div></div>'
+				. $portrait_img
+				. '</div><div class="founder-body"><h2' . ci_s_heading_size_attr( $s ) . '>' . ci_e( $name ) . '</h2><span class="small-label">' . ci_e( $role ) . '</span>' . $socials . '<blockquote' . ci_s_text_size_attr( $s ) . '>' . ci_e( $quote ) . '</blockquote></div></article>';
 		}
-		if ( ! $portrait ) {
-			$portrait = (int) get_post_thumbnail_id( $fid );
+	} else {
+		foreach ( ci_posts( 'ci_team', array( 'meta_key' => 'team_is_founder', 'meta_value' => '1' ) ) as $i => $f ) {
+			$fid      = $f->ID;
+			$name     = ci_title( $f );
+			$role     = ci_get( 'founder_role', $fid );
+			$portrait = (int) ci_get( 'team_photo', $fid );
+			if ( ! $portrait ) {
+				$portrait = (int) ci_get( 'founder_portrait', $fid );
+			}
+			if ( ! $portrait ) {
+				$portrait = (int) get_post_thumbnail_id( $fid );
+			}
+			$email    = ci_get( 'founder_email', $fid );
+			if ( ! $email ) {
+				$email = ( false !== stripos( $name, 'Pramit' ) ) ? 'pramit.ghosh@ci360degrees.com' : ( ( false !== stripos( $name, 'Aashit' ) ) ? 'aashit.shah@ci360degrees.com' : 'info@ci360degrees.com' );
+			}
+			$linkedin = ci_get( 'founder_linkedin', $fid );
+			if ( ! $linkedin || 'https://www.linkedin.com/' === $linkedin ) {
+				$linkedin = ( false !== stripos( $name, 'Pramit' ) )
+					? 'https://www.linkedin.com/in/ghoshpramit/'
+					: ( ( false !== stripos( $name, 'Aashit' ) )
+						? 'https://www.linkedin.com/in/aashit-shah-63b554262/'
+						: 'https://www.linkedin.com/' );
+			}
+			$socials  = '<div class="founder-socials">'
+				. '<a href="' . esc_url( $linkedin ) . '" target="_blank" rel="noopener noreferrer" class="founder-social-icon" title="LinkedIn">' . ci_social_icon_svg( 'linkedin' ) . '</a>'
+				. '<a href="mailto:' . esc_attr( $email ) . '" class="founder-social-icon" title="Email / Gmail">' . ci_social_icon_svg( 'email' ) . '</a>'
+				. '</div>';
+
+			$profiles .= '<article class="founder-profile" data-reveal><div class="founder-photo tone-' . esc_attr( ci_get( 'founder_tone', $fid ) ) . '"><div class="founder-fallback">' . ci_img( $s['fallback_image'], 'Creative studio environment' ) . '<div><span>' . ci_e( ci_get( 'founder_initials', $fid ) ) . '</span><p>' . ci_e( ci_get( 'founder_lens', $fid ) ) . '</p></div></div>'
+				. ( $portrait ? '<img class="founder-portrait" src="' . esc_url( wp_get_attachment_image_url( $portrait, 'full' ) ) . '" alt="' . esc_attr( $name ) . ' - portrait" loading="lazy" data-external-portrait>' : '' )
+				. '</div><div class="founder-body"><h2' . ci_s_heading_size_attr( $s ) . '>' . ci_e( $name ) . '</h2><span class="small-label">' . ci_e( $role ) . '</span>' . $socials . '<blockquote' . ci_s_text_size_attr( $s ) . '>' . ci_e( ci_get( 'founder_quote', $fid ) ) . '</blockquote></div></article>';
 		}
-		$profiles .= '<article class="founder-profile" data-reveal><div class="founder-photo tone-' . esc_attr( ci_get( 'founder_tone', $fid ) ) . '"><div class="founder-fallback">' . ci_img( $s['fallback_image'], 'Creative studio environment' ) . '<div><span>' . ci_e( ci_get( 'founder_initials', $fid ) ) . '</span><p>' . ci_e( ci_get( 'founder_lens', $fid ) ) . '</p></div></div>'
-			. ( $portrait ? '<img class="founder-portrait" src="' . esc_url( wp_get_attachment_image_url( $portrait, 'full' ) ) . '" alt="' . esc_attr( $name ) . ' - portrait" loading="lazy" data-external-portrait>' : '' )
-			. '<span class="founder-photo-label">0' . ( $i + 1 ) . ' / ' . ci_e( mb_strtoupper( $role ) ) . '</span></div><div class="founder-body"><span class="small-label">' . ci_e( $role ) . '</span><h2>' . ci_e( $name ) . '</h2><blockquote>' . ci_e( ci_get( 'founder_quote', $fid ) ) . '</blockquote></div></article>';
 	}
 	return '<section class="founder-duo wrap">' . $profiles . '</section>';
 }
 
 function ci_s_founders_belief( $s ) {
-	return '<section class="section dark-section"><div class="wrap shared-belief"><div>' . ci_s_label( $s ) . '<h2 data-reveal>' . ci_html( $s['heading'] ) . '</h2><div class="shared-symbol" aria-hidden="true">' . ci_star() . ' + ' . ci_star() . '</div></div><div>' . ci_paragraphs( $s['text'] ) . '</div></div></section>';
+	return '<section class="section dark-section"><div class="wrap shared-belief"><div>' . ci_s_label( $s ) . '<h2 data-reveal' . ci_s_heading_size_attr( $s ) . '>' . ci_html( $s['heading'] ) . '</h2></div><div' . ci_s_text_size_attr( $s ) . '>' . ci_paragraphs( $s['text'] ) . '</div></div></section>';
 }
 
 function ci_s_founders_studio( $s ) {
-	return '<section class="section wrap founder-studio"><div class="studio-photo" data-reveal>' . ci_img( $s['image'] ) . '</div><div><h2 data-reveal>' . ci_html( $s['heading'] ) . '</h2><p>' . ci_e( $s['text'] ) . '</p>' . ci_btn( $s['button'], $s['button_link'], 'outline' ) . '</div></section>';
+	return '<section class="section wrap founder-studio"><div class="studio-photo" data-reveal>' . ci_img( $s['image'] ) . '</div><div><h2 data-reveal' . ci_s_heading_size_attr( $s ) . '>' . ci_html( $s['heading'] ) . '</h2><p' . ci_s_text_size_attr( $s ) . '>' . ci_e( $s['text'] ) . '</p>' . ci_btn( $s['button'], $s['button_link'], 'outline' ) . '</div></section>';
 }
 
 /* ================================================================ SERVICES */
@@ -401,7 +523,7 @@ function ci_s_services_hero( $s ) {
 		$visual = '<div class="services-hero-art">' . ci_service_visual( $hero ) . $badge . '</div>';
 	}
 
-	return '<section class="' . esc_attr( $classes ) . '"' . $attr . '><div class="wrap services-hero-shell">' . ci_breadcrumb( $s['crumb'] ) . '<div class="services-hero-grid"><div class="services-hero-copy">' . ci_s_label( $s ) . '<h1 class="display" data-title>' . ci_html( $s['heading'] ) . '</h1><p>' . ci_e( $s['intro'] ) . '</p>' . ci_btn( $s['button'], ci_s_link( $s['button_link'], 'contact' ) ) . '</div>' . $visual . '</div></div></section>';
+	return '<section class="' . esc_attr( $classes ) . '"' . $attr . '><div class="wrap services-hero-shell">' . ci_breadcrumb( $s['crumb'] ) . '<div class="services-hero-grid"><div class="services-hero-copy">' . ci_s_label( $s ) . '<h1 class="display"' . ci_s_heading_size_attr( $s ) . ' data-title>' . ci_html( $s['heading'] ) . '</h1><p>' . ci_e( $s['intro'] ) . '</p>' . ci_btn( $s['button'], ci_s_link( $s['button_link'], 'contact' ) ) . '</div>' . $visual . '</div></div></section>';
 }
 
 function ci_s_services_grid( $s ) {
@@ -437,7 +559,7 @@ function ci_s_services_grid( $s ) {
 
 function ci_s_work_hero( $s ) {
 	$total = ci_count( 'ci_project' );
-	return '<section class="page-hero wrap work-hero">' . ci_breadcrumb( $s['crumb'] ) . ci_s_label( $s ) . '<div class="work-hero-head"><h1 class="display" data-title>' . ci_html( $s['heading'] ) . '</h1><div class="work-hero-circle">' . (int) $total . '<span>' . ci_html( $s['circle'] ) . '</span>' . ci_star() . '</div></div><div class="hero-intro-row"><p>' . ci_e( $s['intro_short'] ) . '</p><p>' . ci_e( $s['intro'] ) . '</p></div></section>';
+	return '<section class="page-hero wrap work-hero">' . ci_breadcrumb( $s['crumb'] ) . ci_s_label( $s ) . '<div class="work-hero-head"><h1 class="display"' . ci_s_heading_size_attr( $s ) . ' data-title>' . ci_html( $s['heading'] ) . '</h1><div class="work-hero-circle">' . (int) $total . '<span>' . ci_html( $s['circle'] ) . '</span>' . ci_star() . '</div></div><div class="hero-intro-row"><p>' . ci_e( $s['intro_short'] ) . '</p><p>' . ci_e( $s['intro'] ) . '</p></div></section>';
 }
 
 function ci_s_work_portfolio( $s ) {
@@ -456,12 +578,12 @@ function ci_s_work_portfolio( $s ) {
 		}
 	}
 	ksort( $pills );
-	$buttons = '<button data-filter="All" aria-pressed="true">' . ci_e( $s['all'] ) . ' <small>' . $total . '</small></button>';
+	$buttons = '<button data-filter="All" aria-pressed="true">' . ci_e( $s['all'] ) . '</button>';
 	foreach ( $pills as $name ) {
 		$buttons .= '<button data-filter="' . esc_attr( $name ) . '" aria-pressed="false">' . ci_e( $name ) . '</button>';
 	}
 	$space = ( 'yes' === ( $s['space_top'] ?? 'yes' ) || true === ( $s['space_top'] ?? true ) ) ? ' has-top-space' : '';
-	return '<section class="wrap portfolio-section' . $space . '"' . ci_s_id( $s ) . '><div class="portfolio-tools"><div class="filter-pills" role="group" aria-label="Filter projects">' . $buttons . '</div><label class="search-field"><span class="sr-only">Search projects</span><input type="search" id="project-search" placeholder="' . esc_attr( $s['search'] ) . '" autocomplete="off"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="m15 15 5 5" stroke="currentColor" stroke-width="1.5"/></svg></label></div><div class="portfolio-count" role="status" aria-live="polite"><span id="result-count">' . (int) $total . '</span> ' . ci_e( $s['count_label'] ) . '</div><div class="project-grid" id="project-grid">' . $cards . '</div><div class="no-results" hidden><h2>' . ci_html( $s['empty_heading'] ) . '</h2><p>' . ci_e( $s['empty_text'] ) . '</p><button class="button button-dark" id="reset-filters">' . ci_e( $s['empty_button'] ) . ' ' . ci_arrow() . '</button></div><p class="portfolio-note">' . ci_e( $s['note'] ) . '</p></section>';
+	return '<section class="wrap portfolio-section' . $space . '"' . ci_s_id( $s ) . '><div class="portfolio-tools"><div class="filter-pills" role="group" aria-label="Filter projects">' . $buttons . '</div><label class="search-field"><span class="sr-only">Search projects</span><input type="search" id="project-search" placeholder="' . esc_attr( $s['search'] ) . '" autocomplete="off"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="m15 15 5 5" stroke="currentColor" stroke-width="1.5"/></svg></label></div><div class="project-grid" id="project-grid">' . $cards . '</div><div class="no-results" hidden><h2>' . ci_html( $s['empty_heading'] ) . '</h2><p>' . ci_e( $s['empty_text'] ) . '</p><button class="button button-dark" id="reset-filters">' . ci_e( $s['empty_button'] ) . ' ' . ci_arrow() . '</button></div><p class="portfolio-note">' . ci_e( $s['note'] ) . '</p></section>';
 }
 
 /* ================================================================ INSIGHTS */
@@ -703,7 +825,7 @@ function ci_s_page_banner( $s ) {
 		}
 		$stats .= '<div class="pb-stat" data-reveal><b>' . ci_e( ci_s_tokens( $r['value'] ) ) . '</b><span>' . ci_e( $r['label'] ?? '' ) . '</span></div>';
 	}
-	return '<section class="page-banner dark-section"><div class="wrap"><div class="pb-grid"><div class="pb-copy">' . $crumb . ci_s_label( $s ) . '<h1 class="pb-title" data-title>' . ci_html( $s['heading'] ) . '</h1>' . ( $s['intro'] ? '<p class="pb-intro">' . ci_e( $s['intro'] ) . '</p>' : '' ) . ( $button || $second ? '<div class="pb-actions">' . $button . $second . '</div>' : '' ) . '</div>'
+	return '<section class="page-banner dark-section"><div class="wrap"><div class="pb-grid"><div class="pb-copy">' . $crumb . ci_s_label( $s ) . '<h1 class="pb-title"' . ci_s_heading_size_attr( $s ) . ' data-title>' . ci_html( $s['heading'] ) . '</h1>' . ( $s['intro'] ? '<p class="pb-intro"' . ci_s_text_size_attr( $s ) . '>' . ci_e( $s['intro'] ) . '</p>' : '' ) . ( $button || $second ? '<div class="pb-actions">' . $button . $second . '</div>' : '' ) . '</div>'
 		. '<div class="pb-visual" aria-hidden="true"><div class="pb-ring"></div><div class="pb-frame">' . ci_img( $s['image'], '', '', true ) . '</div>' . ( $img2 ? '<div class="pb-frame-2">' . $img2 . '</div>' : '' ) . $card . '<div class="pb-sticker">' . ci_star() . '</div></div></div>'
 		. ( $stats ? '<div class="pb-stats">' . $stats . '</div>' : '' ) . '</div></section>';
 }
@@ -838,7 +960,7 @@ function ci_s_blog_archive( $s ) {
 		}
 	}
 	asort( $cats );
-	$pills = '<button type="button" data-blog-filter="all" aria-pressed="true">' . ci_e( $s['all_label'] ) . ' <small>' . count( $items ) . '</small></button>';
+	$pills = '<button type="button" data-blog-filter="all" aria-pressed="true">' . ci_e( $s['all_label'] ) . '</button>';
 	foreach ( $cats as $slug => $name ) {
 		$pills .= '<button type="button" data-blog-filter="' . esc_attr( $slug ) . '" aria-pressed="false">' . ci_e( $name ) . '</button>';
 	}
@@ -851,7 +973,6 @@ function ci_s_blog_archive( $s ) {
 			. '<span class="blog-card-foot"><span class="blog-card-author">' . ci_e( $it['author'] ) . '</span><span class="blog-card-read">' . ci_e( $s['read_more'] ) . ' ' . ci_arrow() . '</span></span></a>';
 	}
 	return '<section class="wrap blog-archive"' . ci_s_id( $s ) . ' data-blog-archive><div class="portfolio-tools blog-tools"><div class="filter-pills" role="group" aria-label="Filter articles by topic">' . $pills . '</div><label class="search-field"><span class="sr-only">Search articles</span><input type="search" data-blog-search placeholder="' . esc_attr( $s['search'] ) . '" autocomplete="off"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="m15 15 5 5" stroke="currentColor" stroke-width="1.5"/></svg></label></div>'
-		. '<div class="portfolio-count" role="status" aria-live="polite"><span data-blog-count>' . count( $items ) . '</span> ' . ci_e( $s['count_label'] ) . '</div>'
 		. '<div class="blog-archive-grid">' . $cards . '</div>'
 		. '<div class="blog-no-results" hidden><h2>' . ci_html( $s['empty_heading'] ) . '</h2><p>' . ci_e( $s['empty_text'] ) . '</p><button type="button" class="button button-dark" data-blog-reset><span>' . ci_e( $s['empty_button'] ) . '</span><i>' . ci_arrow() . '</i></button></div></section>';
 }
@@ -926,12 +1047,12 @@ function ci_s_challenge_approach( $s ) {
 	$out .= '<div class="ci360-ca-grid">';
 
 	$out .= '<div class="ci360-ca-card ci360-ca-challenge">';
-	$out .= '<div class="ci360-ca-card-header"><span class="ci360-ca-kicker">01 / PROBLEM</span><h3>' . ci_e( $challenge_title ) . '</h3></div>';
+	$out .= '<div class="ci360-ca-card-header"><span class="ci360-ca-kicker">PROBLEM</span><h3>' . ci_e( $challenge_title ) . '</h3></div>';
 	$out .= '<div class="ci360-ca-card-body"><p>' . ci_e( $challenge_text ) . '</p></div>';
 	$out .= '</div>';
 
 	$out .= '<div class="ci360-ca-card ci360-ca-approach">';
-	$out .= '<div class="ci360-ca-card-header"><span class="ci360-ca-kicker">02 / SOLUTION</span><h3>' . ci_e( $approach_title ) . '</h3></div>';
+	$out .= '<div class="ci360-ca-card-header"><span class="ci360-ca-kicker">SOLUTION</span><h3>' . ci_e( $approach_title ) . '</h3></div>';
 	$out .= '<div class="ci360-ca-card-body"><p>' . ci_e( $approach_text ) . '</p></div>';
 	$out .= '</div>';
 
@@ -971,7 +1092,14 @@ function ci_s_service_hero( $s ) {
 	$badge3_lbl  = $s['badge3_label'] ?? 'Reach';
 	$badge3_val  = $s['badge3_value'] ?? '2.4M';
 
-	$show_badges = ( ! isset( $s['show_badges'] ) || 'no' !== $s['show_badges'] );
+	$show_badges = ( ! isset( $s['show_badges'] ) || ( 'no' !== $s['show_badges'] && 'false' !== $s['show_badges'] && false !== $s['show_badges'] ) );
+
+	$b1 = trim( (string) ( $s['badge1_value'] ?? '' ) );
+	$b2 = trim( (string) ( $s['badge2_value'] ?? '' ) );
+	$b3 = trim( (string) ( $s['badge3_value'] ?? '' ) );
+	if ( '' === $b1 && '' === $b2 && '' === $b3 && isset( $s['badge1_value'] ) ) {
+		$show_badges = false;
+	}
 
 	$words = explode( ' ', $title );
 	if ( count( $words ) > 1 ) {
@@ -988,23 +1116,26 @@ function ci_s_service_hero( $s ) {
 			. '<div class="ci360-glass-badge badge-reach"><span class="label">' . esc_html( $badge3_lbl ) . '</span><span class="value">' . esc_html( $badge3_val ) . '</span></div>';
 	}
 
+	$stage_cls = 'ci360-service-visual-stage' . ( $show_badges ? '' : ' no-badges' );
+	$card_cls  = 'ci360-hero-main-card' . ( $show_badges ? '' : ' no-badges' );
+
 	return '<section class="ci360-service-hero"' . ci_s_id( $s ) . '>'
 		. '<div class="ci360-service-hero-bg"></div>'
 		. '<div class="ci360-service-hero-wrap wrap">'
 		. '<div class="ci360-service-hero-left">'
 		. '<nav class="ci360-service-breadcrumb" aria-label="Breadcrumb"><a href="' . esc_url( home_url( '/' ) ) . '">' . esc_html( $bc_home ) . '</a><span class="sep">&gt;</span><a href="' . esc_url( $bc_p_url ) . '">' . esc_html( $bc_parent ) . '</a><span class="sep">&gt;</span><span class="current">' . esc_html( $title ) . '</span></nav>'
 		. '<div class="ci360-service-kicker"><span>' . esc_html( mb_strtoupper( $kicker ) ) . '</span></div>'
-		. '<h1 class="ci360-service-hero-title">' . $formatted_title . '</h1>'
+		. '<h1 class="ci360-service-hero-title"' . ci_s_heading_size_attr( $s ) . '>' . $formatted_title . '</h1>'
 		. '<p class="ci360-service-hero-lead">' . esc_html( $lead ) . '</p>'
 		. '<div class="ci360-service-hero-btns">'
 		. ( $btn1 ? '<a href="' . esc_url( $btn1_url ) . '" class="ci360-btn-pill-primary">' . esc_html( $btn1 ) . ' ' . ci_arrow() . '</a>' : '' )
 		. ( $btn2 ? '<a href="' . esc_url( $btn2_url ) . '" class="ci360-btn-pill-outline">' . esc_html( $btn2 ) . '</a>' : '' )
 		. '</div>'
 		. '</div>'
-		. '<div class="ci360-service-hero-right"><div class="ci360-service-visual-stage"><div class="ci360-hero-main-card">'
+		. '<div class="ci360-service-hero-right"><div class="' . $stage_cls . '"><div class="' . $card_cls . '">'
 		. $img
 		. $badges_html
-		. '<div class="ci360-platform-pills"><span class="platform-icon ig"></span><span class="platform-icon fb"></span><span class="platform-icon tk"></span><span class="platform-icon li"></span><span class="platform-icon yt"></span><span class="platform-icon x"></span></div>'
+		. ( $show_badges ? '<div class="ci360-platform-pills"><span class="platform-icon ig"></span><span class="platform-icon fb"></span><span class="platform-icon tk"></span><span class="platform-icon li"></span><span class="platform-icon yt"></span><span class="platform-icon x"></span></div>' : '' )
 		. '</div></div></div>'
 		. '</div></section>';
 }
@@ -1078,12 +1209,8 @@ function ci_s_service_approach( $s ) {
 
 	$steps_html = '';
 	if ( ! empty( $steps ) ) {
-		$tot = count( $steps );
-		foreach ( $steps as $i => $st ) {
-			$num        = $st['num'] ?? ( $i + 1 );
-			$icon       = $st['icon'] ?? '💡';
-			$arrow      = ( $i < $tot - 1 ) ? '<span class="step-arrow">&rarr;</span>' : '';
-			$steps_html .= '<div class="ci360-step-item"><div class="step-head"><span class="step-num">' . esc_html( $num ) . '</span><span class="step-icon">' . esc_html( $icon ) . '</span>' . $arrow . '</div><h3>' . ci_e( $st['title'] ?? '' ) . '</h3><p>' . ci_e( $st['text'] ?? '' ) . '</p></div>';
+		foreach ( $steps as $st ) {
+			$steps_html .= '<div class="ci360-step-item"><h3>' . ci_e( $st['title'] ?? '' ) . '</h3><p>' . ci_e( $st['text'] ?? '' ) . '</p></div>';
 		}
 	}
 

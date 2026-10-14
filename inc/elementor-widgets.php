@@ -134,6 +134,9 @@ abstract class CI360_Section_Widget extends Widget_Base {
 			);
 		};
 		foreach ( $def['controls'] as $c ) {
+			if ( isset( $c['key'] ) && ( 'heading_font_size' === $c['key'] || 'text_font_size' === $c['key'] ) ) {
+				continue;
+			}
 			if ( 'section' === $c['type'] ) {
 				if ( $open ) {
 					$this->end_controls_section();
@@ -173,6 +176,18 @@ abstract class CI360_Section_Widget extends Widget_Base {
 			$this->start_controls_section( 'ci_sec_0', array( 'label' => 'Content', 'tab' => Controls_Manager::TAB_CONTENT ) );
 			$note();
 		}
+		$this->end_controls_section();
+
+		$this->start_controls_section( 'ci_typography_section', array( 'label' => 'Typography (Font Sizes)', 'tab' => Controls_Manager::TAB_STYLE ) );
+		$this->add_control( 'heading_font_size', array( 'label' => 'Heading Font Size (px)', 'type' => Controls_Manager::NUMBER, 'placeholder' => 'e.g. 52', 'min' => 10, 'max' => 200 ) );
+		$this->add_control( 'text_font_size', array( 'label' => 'Body / Text Font Size (px)', 'type' => Controls_Manager::NUMBER, 'placeholder' => 'e.g. 18', 'min' => 10, 'max' => 100 ) );
+		$this->end_controls_section();
+
+		$this->start_controls_section( 'ci_spacing_section', array( 'label' => 'Spacing & Layout (Margin / Padding)', 'tab' => Controls_Manager::TAB_STYLE ) );
+		$this->add_control( 'margin_top', array( 'label' => 'Margin Top (px)', 'type' => Controls_Manager::NUMBER, 'placeholder' => 'e.g. 40' ) );
+		$this->add_control( 'margin_bottom', array( 'label' => 'Margin Bottom (px)', 'type' => Controls_Manager::NUMBER, 'placeholder' => 'e.g. 40' ) );
+		$this->add_control( 'padding_top', array( 'label' => 'Padding Top (px)', 'type' => Controls_Manager::NUMBER, 'placeholder' => 'e.g. 40' ) );
+		$this->add_control( 'padding_bottom', array( 'label' => 'Padding Bottom (px)', 'type' => Controls_Manager::NUMBER, 'placeholder' => 'e.g. 40' ) );
 		$this->end_controls_section();
 	}
 

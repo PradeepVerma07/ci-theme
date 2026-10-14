@@ -91,6 +91,13 @@ function ci_url( $url ) {
 	if ( '' === $url ) {
 		return home_url( '/' );
 	}
+	if ( '/work/' === $url || '/work' === $url ) {
+		$cs_id = ci_page_id( 'case-studies' );
+		if ( $cs_id ) {
+			return get_permalink( $cs_id );
+		}
+		return home_url( '/case-studies/' );
+	}
 	if ( 0 === strpos( $url, '/' ) && 0 !== strpos( $url, '//' ) ) {
 		return home_url( $url );
 	}
@@ -101,7 +108,11 @@ function ci_links( $html ) {
 	return preg_replace_callback(
 		'/href="(\/[^"\/][^"]*|\/)"/',
 		function ( $m ) {
-			return 'href="' . esc_url( home_url( $m[1] ) ) . '"';
+			$path = $m[1];
+			if ( '/work/' === $path || '/work' === $path ) {
+				$path = '/case-studies/';
+			}
+			return 'href="' . esc_url( home_url( $path ) ) . '"';
 		},
 		$html
 	);
@@ -142,13 +153,27 @@ function ci_img( $id, $alt = null, $cls = '', $eager = false, $size = 'full' ) {
 	return '<img class="' . esc_attr( $cls ) . '" src="' . esc_url( $src ) . '" alt="' . esc_attr( $alt ?? '' ) . '" loading="' . ( $eager ? 'eager' : 'lazy' ) . '" decoding="async" ' . ( $eager ? 'fetchpriority="high"' : '' ) . '>';
 }
 function ci_arrow( $dir = 'ne' ) {
-	return '<svg class="icon arrow-' . $dir . '" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+	$paths = array(
+		'ne' => 'M7 17L17 7M7 7h10v10',
+		'se' => 'M7 7l10 10M17 7v10H7',
+		'sw' => 'M17 7L7 17M17 17H7V7',
+		'nw' => 'M17 17L7 7M17 7H7v10',
+	);
+	$d = $paths[ $dir ] ?? $paths['ne'];
+	return '<svg class="icon arrow-' . esc_attr( $dir ) . '" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="' . $d . '" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 }
 function ci_star() {
 	return '<svg class="star modern-star" viewBox="0 0 100 100" aria-hidden="true"><path d="M50 0C50 27.614 72.386 50 100 50C72.386 50 50 72.386 50 100C50 72.386 27.614 50 0 50C27.614 50 50 27.614 50 0Z" fill="currentColor"/></svg>';
 }
 function ci_label( $n, $t ) {
-	return '<div class="section-label"><span>' . ci_e( $n ) . '</span><span>' . ci_e( $t ) . '</span></div>';
+	$n = preg_replace( '/^\d+\s*\/\s*/', '', trim( (string) $n ) );
+	if ( 'SELECTED WORK' === mb_strtoupper( $n ) ) {
+		$n = 'CASE STUDIES';
+	}
+	if ( preg_match( '/^\d+$/', $n ) ) {
+		$n = '';
+	}
+	return '<div class="section-label">' . ( '' !== trim( (string) $n ) ? '<span>' . ci_e( $n ) . '</span>' : '' ) . '<span>' . ci_e( $t ) . '</span></div>';
 }
 /** Label from a section field prefix. */
 function ci_sec_label( $p, $post_id = null ) {
@@ -204,11 +229,26 @@ function ci_term_name( $post_id, $tax ) {
 	return ( $terms && ! is_wp_error( $terms ) ) ? $terms[0]->name : '';
 }
 
-/** ID of a core page (about, founders, services, work, insights, contact…). */
+/** ID of a core page (about, founders, services, work, case-studies, insights, contact…). */
 function ci_page_id( $key ) {
 	$map = (array) get_option( 'ci360_pages', array() );
 	if ( ! empty( $map[ $key ] ) && get_post_status( $map[ $key ] ) ) {
 		return (int) $map[ $key ];
+	}
+	if ( 'work' === $key || 'case-studies' === $key || 'case-study' === $key ) {
+		foreach ( array( 'case-studies', 'case-study', 'work' ) as $k ) {
+			if ( ! empty( $map[ $k ] ) && get_post_status( $map[ $k ] ) ) {
+				return (int) $map[ $k ];
+			}
+			$pages = get_pages( array( 'meta_key' => '_wp_page_template', 'meta_value' => 'page-templates/' . $k . '.php', 'number' => 1 ) );
+			if ( $pages ) {
+				return (int) $pages[0]->ID;
+			}
+			$page = get_page_by_path( $k );
+			if ( $page ) {
+				return (int) $page->ID;
+			}
+		}
 	}
 	$pages = get_pages( array( 'meta_key' => '_wp_page_template', 'meta_value' => 'page-templates/' . $key . '.php', 'number' => 1 ) );
 	if ( $pages ) {

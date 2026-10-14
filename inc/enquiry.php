@@ -13,7 +13,8 @@ add_action( 'init', function () {
 		array(
 			'labels'          => array( 'name' => 'Enquiries', 'singular_name' => 'Enquiry' ),
 			'public'          => false,
-			'show_ui'         => true,
+			'show_ui'         => false,
+			'show_in_menu'    => false,
 			'menu_icon'       => 'dashicons-email-alt',
 			'menu_position'   => 22,
 			'supports'        => array( 'title', 'editor' ),

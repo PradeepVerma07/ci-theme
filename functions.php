@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'CI360_VERSION', '3.1.0' );
+define( 'CI360_VERSION', '3.4.6' );
 define( 'CI360_DIR', get_stylesheet_directory() );
 define( 'CI360_URI', get_stylesheet_directory_uri() );
 
@@ -24,3 +24,4 @@ require CI360_DIR . '/inc/elementor.php';
 require CI360_DIR . '/inc/importer.php';
 require CI360_DIR . '/inc/demo.php';
 require CI360_DIR . '/inc/admin-guide.php';
+require CI360_DIR . '/inc/admin-dashboard.php';

@@ -55,7 +55,7 @@ function ci_section_defs() {
 			'desc'     => '',
 			'controls' => array(
 				array( 'type' => 'section', 'label' => 'Heading' ),
-				array( 'type' => 'text', 'key' => 'label_1', 'label' => 'Label (left)', 'default' => '01 / SELECTED WORK' ),
+				array( 'type' => 'text', 'key' => 'label_1', 'label' => 'Label (left)', 'default' => 'CASE STUDIES' ),
 				array( 'type' => 'text', 'key' => 'label_2', 'label' => 'Label (right)', 'default' => 'DIFFERENT BRANDS. CONNECTED THINKING.' ),
 				array( 'type' => 'html', 'key' => 'heading', 'label' => 'Heading', 'default' => 'Not just seen.<br><em>Felt. Remembered.</em>' ),
 				array( 'type' => 'textarea', 'key' => 'intro', 'label' => 'Intro', 'default' => 'From everyday moments to extraordinary possibilities. A selection of the brands in our world.' ),
@@ -65,7 +65,7 @@ function ci_section_defs() {
 				array( 'type' => 'text', 'key' => 'card_link', 'label' => 'Card link text', 'default' => 'Explore the project' ),
 				array( 'type' => 'text', 'key' => 'end_text', 'label' => 'Closing line', 'default' => 'A collection of different challenges. One integrated approach.' ),
 				array( 'type' => 'text', 'key' => 'button', 'label' => 'Button (%d = number of projects)', 'default' => 'View all %d projects' ),
-				array( 'type' => 'text', 'key' => 'button_link', 'label' => 'Button link', 'default' => '/work/' ),
+				array( 'type' => 'text', 'key' => 'button_link', 'label' => 'Button link', 'default' => '/case-studies/' ),
 			),
 		),
 		'home-capabilities' => array(
@@ -74,7 +74,7 @@ function ci_section_defs() {
 			'desc'     => '',
 			'controls' => array(
 				array( 'type' => 'section', 'label' => 'Heading' ),
-				array( 'type' => 'text', 'key' => 'label_1', 'label' => 'Label (left)', 'default' => '02 / WHAT WE DO' ),
+				array( 'type' => 'text', 'key' => 'label_1', 'label' => 'Label (left)', 'default' => 'WHAT WE DO' ),
 				array( 'type' => 'text', 'key' => 'label_2', 'label' => 'Label (right)', 'default' => 'ONE PARTNER. EVERY MARKETING POSSIBILITY.' ),
 				array( 'type' => 'html', 'key' => 'heading', 'label' => 'Heading', 'default' => 'A full circle<br>of <em>possibilities.</em>' ),
 				array( 'type' => 'textarea', 'key' => 'intro', 'label' => 'Intro', 'default' => 'Strategy, creativity, digital, technology and performance. Working together, not in silos.' ),
@@ -94,7 +94,7 @@ function ci_section_defs() {
 				array( 'type' => 'image', 'key' => 'image', 'label' => 'Photo', 'default' => 'studio.webp' ),
 				array( 'type' => 'html', 'key' => 'stamp', 'label' => 'Photo stamp', 'default' => 'CURIOUS MINDS<br>AT WORK.' ),
 				array( 'type' => 'section', 'label' => 'Text' ),
-				array( 'type' => 'text', 'key' => 'label_1', 'label' => 'Label (left)', 'default' => '03 / THE AGENCY' ),
+				array( 'type' => 'text', 'key' => 'label_1', 'label' => 'Label (left)', 'default' => 'THE AGENCY' ),
 				array( 'type' => 'text', 'key' => 'label_2', 'label' => 'Label (right)', 'default' => 'ALWAYS LOOKING CLOSER' ),
 				array( 'type' => 'html', 'key' => 'heading', 'label' => 'Heading', 'default' => 'Big on ideas.<br><em>Closer to you.</em>' ),
 				array( 'type' => 'textarea', 'key' => 'text', 'label' => 'Text (blank line between paragraphs)', 'default' => 'CI360 Degrees is an integrated digital marketing and strategic communication agency helping businesses transform ideas into impactful brand experiences and measurable growth.
@@ -143,7 +143,7 @@ We begin by listening. Then bring the right minds, disciplines and stories toget
 			'desc'     => '',
 			'controls' => array(
 				array( 'type' => 'section', 'label' => 'Heading' ),
-				array( 'type' => 'text', 'key' => 'label_1', 'label' => 'Label (left)', 'default' => '04 / INSIGHTS' ),
+				array( 'type' => 'text', 'key' => 'label_1', 'label' => 'Label (left)', 'default' => 'INSIGHTS' ),
 				array( 'type' => 'text', 'key' => 'label_2', 'label' => 'Label (right)', 'default' => 'THOUGHTS THAT MOVE THE CONVERSATION' ),
 				array( 'type' => 'html', 'key' => 'heading', 'label' => 'Heading', 'default' => 'A fresh<br><em>perspective.</em>' ),
 				array( 'type' => 'textarea', 'key' => 'intro', 'label' => 'Intro', 'default' => 'Marketing never stops evolving, and neither does our thinking. Explore CI360 perspectives on strategic storytelling, digital marketing trends, AI in marketing, SEO, AEO, GEO, performance marketing, brand strategy, content marketing, podcasting, and changing consumer behaviour.' ),
@@ -160,7 +160,7 @@ We begin by listening. Then bring the right minds, disciplines and stories toget
 			'controls' => array(
 				array( 'type' => 'section', 'label' => 'Heading' ),
 				array( 'type' => 'select', 'key' => 'style', 'label' => 'Colour style', 'default' => 'dark', 'options' => array( 'dark' => 'Dark (deep navy with glow)', 'light' => 'Light (page background)' ) ),
-				array( 'type' => 'text', 'key' => 'label_1', 'label' => 'Label (left)', 'default' => '04 / INSIGHTS' ),
+				array( 'type' => 'text', 'key' => 'label_1', 'label' => 'Label (left)', 'default' => 'INSIGHTS' ),
 				array( 'type' => 'text', 'key' => 'label_2', 'label' => 'Label (right)', 'default' => 'THOUGHTS THAT MOVE THE CONVERSATION' ),
 				array( 'type' => 'html', 'key' => 'heading', 'label' => 'Heading', 'default' => 'Insights and<br><em>resources.</em>' ),
 				array( 'type' => 'textarea', 'key' => 'intro', 'label' => 'Intro', 'default' => 'Marketing never stops evolving, and neither does our thinking. Explore CI360 perspectives on strategic storytelling, digital marketing trends, AI in marketing, SEO, AEO, GEO, performance marketing, brand strategy, content marketing, podcasting, and changing consumer behaviour.' ),
@@ -213,6 +213,7 @@ We begin by listening. Then bring the right minds, disciplines and stories toget
 			'desc'     => '',
 			'controls' => array(
 				array( 'type' => 'text', 'key' => 'text', 'label' => 'Heading', 'default' => 'A new chapter starts with a conversation.' ),
+				array( 'type' => 'number', 'key' => 'heading_font_size', 'label' => 'Heading font size (px, e.g. 42)', 'default' => '' ),
 				array( 'type' => 'text', 'key' => 'button', 'label' => 'Button text', 'default' => 'Let\'s talk' ),
 				array( 'type' => 'text', 'key' => 'button_link', 'label' => 'Button link', 'default' => '/contact/' ),
 			),
@@ -227,11 +228,13 @@ We begin by listening. Then bring the right minds, disciplines and stories toget
 				array( 'type' => 'text', 'key' => 'label_1', 'label' => 'Label (left)', 'default' => 'ABOUT CI360' ),
 				array( 'type' => 'text', 'key' => 'label_2', 'label' => 'Label (right)', 'default' => 'NAVIGATING CHANGE WITH PURPOSE' ),
 				array( 'type' => 'html', 'key' => 'heading', 'label' => 'Heading (page title)', 'default' => 'The brands people<br><em>remember.</em>' ),
+				array( 'type' => 'number', 'key' => 'heading_font_size', 'label' => 'Heading font size (px, e.g. 70)', 'default' => '' ),
 				array( 'type' => 'textarea', 'key' => 'intro', 'label' => 'Intro', 'default' => 'CI360 stands at the forefront of an ever-shifting digital landscape, dedicated to the art of focused attention - always evolving, always looking closer, always building the specific idea that makes a story stick.' ),
+				array( 'type' => 'number', 'key' => 'text_font_size', 'label' => 'Intro text font size (px, e.g. 18)', 'default' => '' ),
 				array( 'type' => 'text', 'key' => 'button', 'label' => 'Button text', 'default' => 'Meet our founders' ),
 				array( 'type' => 'text', 'key' => 'button_link', 'label' => 'Button link', 'default' => '/founders/' ),
 				array( 'type' => 'text', 'key' => 'secondary', 'label' => 'Second link text', 'default' => 'Explore our work' ),
-				array( 'type' => 'text', 'key' => 'secondary_link', 'label' => 'Second link', 'default' => '/work/' ),
+				array( 'type' => 'text', 'key' => 'secondary_link', 'label' => 'Second link', 'default' => '/case-studies/' ),
 				array( 'type' => 'section', 'label' => 'Images' ),
 				array( 'type' => 'image', 'key' => 'image', 'label' => 'Main image', 'default' => 'studio.webp' ),
 				array( 'type' => 'image', 'key' => 'image_2', 'label' => 'Small image (optional)', 'default' => 'studio-detail.webp' ),
@@ -291,6 +294,8 @@ We begin by listening. Then bring the right minds, disciplines and stories toget
 				array( 'type' => 'text', 'key' => 'label_1', 'label' => 'Label (left)', 'default' => 'ABOUT CI360' ),
 				array( 'type' => 'text', 'key' => 'label_2', 'label' => 'Label (right)', 'default' => 'NAVIGATING CHANGE WITH PURPOSE' ),
 				array( 'type' => 'html', 'key' => 'heading', 'label' => 'Heading', 'default' => 'The brands people<br><em>remember.</em>' ),
+				array( 'type' => 'number', 'key' => 'heading_font_size', 'label' => 'Heading font size (px, e.g. 70)', 'default' => '' ),
+				array( 'type' => 'number', 'key' => 'text_font_size', 'label' => 'Intro text font size (px, e.g. 18)', 'default' => '' ),
 				array( 'type' => 'text', 'key' => 'intro_short', 'label' => 'Intro (short)', 'default' => 'Because great stories endure.' ),
 				array( 'type' => 'textarea', 'key' => 'intro', 'label' => 'Intro', 'default' => 'CI360 stands at the forefront of an ever-shifting digital landscape, dedicated to the art of focused attention. Each strand of content and every pixel of design reflects our belief in the transformative power of digital. Our team remains a community of learners and innovators - always evolving, always looking closer, always building the specific idea that makes a story stick.' ),
 				array( 'type' => 'section', 'label' => 'Wide image' ),
@@ -309,6 +314,8 @@ We begin by listening. Then bring the right minds, disciplines and stories toget
 				array( 'type' => 'text', 'key' => 'label_1', 'label' => 'Label (left)', 'default' => 'OUR COMPASS' ),
 				array( 'type' => 'text', 'key' => 'label_2', 'label' => 'Label (right)', 'default' => 'VISION. MISSION. VALUES.' ),
 				array( 'type' => 'html', 'key' => 'heading', 'label' => 'Heading', 'default' => 'Purpose in<br><em>every direction.</em>' ),
+				array( 'type' => 'number', 'key' => 'heading_font_size', 'label' => 'Heading font size (px, e.g. 52)', 'default' => '' ),
+				array( 'type' => 'number', 'key' => 'text_font_size', 'label' => 'Cards text font size (px, e.g. 16)', 'default' => '' ),
 				array( 'type' => 'section', 'label' => 'Cards' ),
 				array( 'type' => 'text', 'key' => 'vision_title', 'label' => 'Vision title', 'default' => 'A broader perspective.' ),
 				array( 'type' => 'textarea', 'key' => 'vision', 'label' => 'Vision', 'default' => 'To be a globally trusted marketing partner, where creativity, technology, and innovation redefine brand communication.' ),
@@ -326,13 +333,15 @@ We begin by listening. Then bring the right minds, disciplines and stories toget
 				array( 'type' => 'text', 'key' => 'label_1', 'label' => 'Label (left)', 'default' => 'THE WAY WE THINK' ),
 				array( 'type' => 'text', 'key' => 'label_2', 'label' => 'Label (right)', 'default' => 'A SINGLE INTEGRATED DIRECTION' ),
 				array( 'type' => 'html', 'key' => 'heading', 'label' => 'Heading', 'default' => 'We turn ideas<br>into <em>impactful<br>solutions.</em>' ),
+				array( 'type' => 'number', 'key' => 'heading_font_size', 'label' => 'Heading font size (px, e.g. 52)', 'default' => '' ),
+				array( 'type' => 'number', 'key' => 'text_font_size', 'label' => 'Text font size (px, e.g. 18)', 'default' => '' ),
 				array( 'type' => 'text', 'key' => 'button', 'label' => 'Button', 'default' => 'Meet our founders' ),
 				array( 'type' => 'text', 'key' => 'button_link', 'label' => 'Button link', 'default' => '/founders/' ),
 				array( 'type' => 'textarea', 'key' => 'text', 'label' => 'Text (first paragraph is large; blank line between paragraphs)', 'default' => 'CI360 stands at the forefront of the digital revolution, embodying the spirited curiosity of the current times. In this era where digital landscapes shift with the wind, our agency emerges as a beacon of integrated marketing services, dedicated to the art of focused attention.
-
-At CI360, the mission is to seamlessly integrate cutting-edge technologies like AI, VR, AR, and the Metaverse with traditional forms of communication, crafting engaging narratives that revolutionize digital marketing.
-
-Navigating the digital realm with a splash of creativity and a dash of strategic magic. CI360 believes in the transformative power of digital and pledges to remain learners and innovators, forever evolving, while understanding the nuance and specificity that make stories and campaigns stick.' ),
+ 
+ At CI360, the mission is to seamlessly integrate cutting-edge technologies like AI, VR, AR, and the Metaverse with traditional forms of communication, crafting engaging narratives that revolutionize digital marketing.
+ 
+ Navigating the digital realm with a splash of creativity and a dash of strategic magic. CI360 believes in the transformative power of digital and pledges to remain learners and innovators, forever evolving, while understanding the nuance and specificity that make stories and campaigns stick.' ),
 			),
 		),
 		'about-journey' => array(
@@ -342,6 +351,8 @@ Navigating the digital realm with a splash of creativity and a dash of strategic
 			'controls' => array(
 				array( 'type' => 'section', 'label' => 'Heading' ),
 				array( 'type' => 'html', 'key' => 'heading', 'label' => 'Heading', 'default' => 'Built one <em>meaningful</em><br>business problem at a time.' ),
+				array( 'type' => 'number', 'key' => 'heading_font_size', 'label' => 'Heading font size (px, e.g. 52)', 'default' => '' ),
+				array( 'type' => 'number', 'key' => 'text_font_size', 'label' => 'Timeline text font size (px, e.g. 16)', 'default' => '' ),
 				array( 'type' => 'color', 'key' => 'heading_color', 'label' => 'Heading color', 'default' => '#ffffff' ),
 				array( 'type' => 'color', 'key' => 'accent_color', 'label' => 'Accent text color', 'default' => '#22d3ee' ),
 				array( 'type' => 'color', 'key' => 'card_title_color', 'label' => 'Card title color', 'default' => '#ffffff' ),
@@ -382,7 +393,9 @@ Navigating the digital realm with a splash of creativity and a dash of strategic
 				array( 'type' => 'text', 'key' => 'label_1', 'label' => 'Label (left)', 'default' => 'THE PEOPLE' ),
 				array( 'type' => 'text', 'key' => 'label_2', 'label' => 'Label (right)', 'default' => 'DIFFERENT MINDS. SHARED PURPOSE.' ),
 				array( 'type' => 'html', 'key' => 'heading', 'label' => 'Heading', 'default' => 'The thinking<br><em>behind the work.</em>' ),
+				array( 'type' => 'number', 'key' => 'heading_font_size', 'label' => 'Heading font size (px, e.g. 52)', 'default' => '' ),
 				array( 'type' => 'textarea', 'key' => 'intro', 'label' => 'Intro', 'default' => 'A multidisciplinary team connecting strategy, creative, technology and delivery.' ),
+				array( 'type' => 'number', 'key' => 'text_font_size', 'label' => 'Intro & role text font size (px, e.g. 18)', 'default' => '' ),
 				array( 'type' => 'text', 'key' => 'anchor', 'label' => 'Section ID', 'default' => 'team' ),
 				array( 'type' => 'section', 'label' => 'Members' ),
 				array( 'type' => 'number', 'key' => 'count', 'label' => 'Number of members (0 = all)', 'default' => 0 ),
@@ -396,15 +409,54 @@ Navigating the digital realm with a splash of creativity and a dash of strategic
 				array( 'type' => 'text', 'key' => 'label_1', 'label' => 'Label (left)', 'default' => 'OUR WORLD' ),
 				array( 'type' => 'text', 'key' => 'label_2', 'label' => 'Label (right)', 'default' => 'ACROSS INDUSTRIES. ACROSS MARKETS.' ),
 				array( 'type' => 'html', 'key' => 'heading', 'label' => 'Heading', 'default' => 'Many worlds.<br><em>One connected team.</em>' ),
+				array( 'type' => 'number', 'key' => 'heading_font_size', 'label' => 'Heading font size (px, e.g. 52)', 'default' => '' ),
+				array( 'type' => 'number', 'key' => 'text_font_size', 'label' => 'Pills text font size (px, e.g. 14)', 'default' => '' ),
 				array( 'type' => 'repeater', 'key' => 'industries', 'label' => 'Industries', 'title_field' => 'name', 'fields' => array( array( 'type' => 'text', 'key' => 'name', 'label' => 'Industry', 'default' => '' ) ), 'default' => array( array( 'name' => 'Satellite Communications' ), array( 'name' => 'Health & Wellness' ), array( 'name' => 'FMCG & Beverages' ), array( 'name' => 'Fashion' ), array( 'name' => 'Beauty' ), array( 'name' => 'Real Estate' ), array( 'name' => 'Spirituality' ), array( 'name' => 'NBFC & Financial Services' ), array( 'name' => 'Knowledge Centres & NGOs' ), array( 'name' => 'Education' ), array( 'name' => 'Government' ), array( 'name' => 'Consumer Durables' ), array( 'name' => 'Hospitality' ), array( 'name' => 'Media & OOH' ), array( 'name' => 'FPO' ) ) ),
 			),
 		),
 		'founders-profiles' => array(
 			'title'    => 'Founders – Profiles',
 			'icon'     => 'eicon-user-circle-o',
-			'desc'     => 'Profiles come from Team members marked “Is a founder”.',
+			'desc'     => 'Add and edit founder profiles directly here in Elementor, or leave empty to query Team members.',
 			'controls' => array(
 				array( 'type' => 'image', 'key' => 'fallback_image', 'label' => 'Portrait fallback image', 'default' => 'studio.webp' ),
+				array( 'type' => 'number', 'key' => 'heading_font_size', 'label' => 'Founder name font size (px, e.g. 32)', 'default' => '' ),
+				array( 'type' => 'number', 'key' => 'text_font_size', 'label' => 'Quote / Bio text font size (px, e.g. 18)', 'default' => '' ),
+				array(
+					'type'        => 'repeater',
+					'key'         => 'founders',
+					'label'       => 'Founder Profiles (Editable)',
+					'title_field' => 'name',
+					'fields'      => array(
+						array( 'type' => 'text', 'key' => 'name', 'label' => 'Name', 'default' => 'Pramit Ghosh' ),
+						array( 'type' => 'text', 'key' => 'role', 'label' => 'Role / Designation', 'default' => 'Founder & CEO' ),
+						array( 'type' => 'image', 'key' => 'portrait', 'label' => 'Portrait Photo', 'default' => '' ),
+						array( 'type' => 'text', 'key' => 'linkedin', 'label' => 'LinkedIn Profile URL', 'default' => 'https://www.linkedin.com/in/ghoshpramit/' ),
+						array( 'type' => 'text', 'key' => 'email', 'label' => 'Email Address', 'default' => 'pramit.ghosh@ci360degrees.com' ),
+						array( 'type' => 'textarea', 'key' => 'quote', 'label' => 'Quote / Bio text', 'default' => 'The most successful brands don\'t just communicate — they connect. Every campaign, every interaction, and every customer experience should begin with a story rooted in purpose. At CI360, strategic storytelling is about saying what truly matters. When brands communicate with authenticity and clarity, they don\'t just gain attention — they earn trust, inspire action, and create long-term value.' ),
+						array( 'type' => 'select', 'key' => 'tone', 'label' => 'Card tone', 'default' => 'blue', 'options' => array( 'blue' => 'Blue', 'orange' => 'Orange', 'lilac' => 'Lilac', 'mint' => 'Mint' ) ),
+					),
+					'default'     => array(
+						array(
+							'name'     => 'Pramit Ghosh',
+							'role'     => 'Founder & CEO',
+							'portrait' => '',
+							'linkedin' => 'https://www.linkedin.com/in/ghoshpramit/',
+							'email'    => 'pramit.ghosh@ci360degrees.com',
+							'quote'    => 'The most successful brands don\'t just communicate — they connect. Every campaign, every interaction, and every customer experience should begin with a story rooted in purpose. At CI360, strategic storytelling is about saying what truly matters. When brands communicate with authenticity and clarity, they don\'t just gain attention — they earn trust, inspire action, and create long-term value.',
+							'tone'     => 'blue',
+						),
+						array(
+							'name'     => 'Aashit Shah',
+							'role'     => 'Co-Founder & Director',
+							'portrait' => '',
+							'linkedin' => 'https://www.linkedin.com/in/aashit-shah-63b554262/',
+							'email'    => 'aashit.shah@ci360degrees.com',
+							'quote'    => 'Great marketing is only valuable when it solves real business challenges. Every strategy is designed with execution, scalability, and measurable outcomes in mind. CI360 believes creativity and technology must work together with operational excellence to deliver solutions that create long-term value.',
+							'tone'     => 'orange',
+						),
+					),
+				),
 			),
 		),
 		'founders-belief' => array(
@@ -415,6 +467,8 @@ Navigating the digital realm with a splash of creativity and a dash of strategic
 				array( 'type' => 'text', 'key' => 'label_1', 'label' => 'Label (left)', 'default' => 'BUILT ON A SHARED BELIEF' ),
 				array( 'type' => 'text', 'key' => 'label_2', 'label' => 'Label (right)', 'default' => 'GREAT MARKETING BEGINS WITH LISTENING' ),
 				array( 'type' => 'html', 'key' => 'heading', 'label' => 'Heading', 'default' => 'A story rooted<br>in <em>purpose.</em>' ),
+				array( 'type' => 'number', 'key' => 'heading_font_size', 'label' => 'Heading font size (px, e.g. 52)', 'default' => '' ),
+				array( 'type' => 'number', 'key' => 'text_font_size', 'label' => 'Text font size (px, e.g. 18)', 'default' => '' ),
 				array( 'type' => 'textarea', 'key' => 'text', 'label' => 'Text (blank line between paragraphs)', 'default' => 'CI360 was founded on a simple belief that great marketing begins long before the first campaign. It begins with listening, understanding the business, the people behind it, and the challenges they face. Strategic storytelling becomes the foundation for meaningful connections between brands and audiences.
 
 The mission is to help brands grow by combining creativity, technology, and strategy into integrated marketing solutions. Solutions span branding, websites, social media, performance marketing, SEO, GEO, local search optimization, Google Business Profile management, content strategy, and emerging technologies.
@@ -429,7 +483,9 @@ While marketing continues to evolve through AI, automation, and immersive digita
 			'controls' => array(
 				array( 'type' => 'image', 'key' => 'image', 'label' => 'Image', 'default' => 'studio.webp' ),
 				array( 'type' => 'html', 'key' => 'heading', 'label' => 'Studio heading', 'default' => 'Good ideas<br>need <em>good company.</em>' ),
+				array( 'type' => 'number', 'key' => 'heading_font_size', 'label' => 'Heading font size (px, e.g. 52)', 'default' => '' ),
 				array( 'type' => 'textarea', 'key' => 'text', 'label' => 'Studio text', 'default' => 'Our team remains a community of learners and innovators - always evolving, always looking closer, always building the specific idea that makes a story stick.' ),
+				array( 'type' => 'number', 'key' => 'text_font_size', 'label' => 'Studio text font size (px, e.g. 18)', 'default' => '' ),
 				array( 'type' => 'text', 'key' => 'button', 'label' => 'Studio button', 'default' => 'Meet the whole team' ),
 				array( 'type' => 'text', 'key' => 'button_link', 'label' => 'Studio button link', 'default' => '/about/#team' ),
 			),
@@ -449,6 +505,7 @@ While marketing continues to evolve through AI, automation, and immersive digita
 				array( 'type' => 'text', 'key' => 'label_1', 'label' => 'Label (left)', 'default' => 'OUR CAPABILITIES' ),
 				array( 'type' => 'text', 'key' => 'label_2', 'label' => 'Label (right)', 'default' => 'STRATEGY THROUGH TO EXECUTION' ),
 				array( 'type' => 'html', 'key' => 'heading', 'label' => 'Heading', 'default' => 'One partner.<br><em>Every possibility.</em>' ),
+				array( 'type' => 'number', 'key' => 'heading_font_size', 'label' => 'Heading font size (px, e.g. 70)', 'default' => '' ),
 				array( 'type' => 'textarea', 'key' => 'intro', 'label' => 'Intro', 'default' => 'From strategic storytelling and brand building to digital marketing, AI search visibility, content, technology and performance. Every capability, together around meaningful, measurable growth.' ),
 				array( 'type' => 'text', 'key' => 'button', 'label' => 'Button', 'default' => 'Find your next move' ),
 				array( 'type' => 'text', 'key' => 'button_link', 'label' => 'Button link', 'default' => '/contact/' ),
@@ -488,6 +545,7 @@ While marketing continues to evolve through AI, automation, and immersive digita
 				array( 'type' => 'text', 'key' => 'label_1', 'label' => 'Label (left)', 'default' => 'THE PORTFOLIO' ),
 				array( 'type' => 'text', 'key' => 'label_2', 'label' => 'Label (right)', 'default' => 'OUR WORK. YOUR NEXT POSSIBILITY.' ),
 				array( 'type' => 'html', 'key' => 'heading', 'label' => 'Heading', 'default' => 'Different worlds.<br><em>Distinctive work.</em>' ),
+				array( 'type' => 'number', 'key' => 'heading_font_size', 'label' => 'Heading font size (px, e.g. 70)', 'default' => '' ),
 				array( 'type' => 'html', 'key' => 'circle', 'label' => 'Circle text', 'default' => 'BRANDS IN<br>THE COLLECTION' ),
 				array( 'type' => 'text', 'key' => 'intro_short', 'label' => 'Intro (short)', 'default' => 'Creativity meets strategy.' ),
 				array( 'type' => 'textarea', 'key' => 'intro', 'label' => 'Intro', 'default' => 'Dive into CI360\'s digital marketing solutions, where creativity meets strategy to drive brand growth. A collection of client brands, creative galleries and sector perspectives.' ),
@@ -619,6 +677,7 @@ While marketing continues to evolve through AI, automation, and immersive digita
 				array( 'type' => 'text', 'key' => 'breadcrumb_parent_link', 'label' => 'Breadcrumb Parent Link', 'default' => '/services/' ),
 				array( 'type' => 'text', 'key' => 'kicker', 'label' => 'Kicker Category', 'default' => 'OUR SERVICE' ),
 				array( 'type' => 'text', 'key' => 'title', 'label' => 'Service Title', 'default' => 'Branding & Design' ),
+				array( 'type' => 'number', 'key' => 'heading_font_size', 'label' => 'Heading font size (px, e.g. 70)', 'default' => '' ),
 				array( 'type' => 'textarea', 'key' => 'lead', 'label' => 'Summary / Lead text', 'default' => 'Building distinctive brand identities through strategy, logo design, visual language, typography, and integrated brand communication.' ),
 				array( 'type' => 'section', 'label' => 'Buttons' ),
 				array( 'type' => 'text', 'key' => 'cta_primary', 'label' => 'Primary Button Text', 'default' => 'Start a Conversation' ),

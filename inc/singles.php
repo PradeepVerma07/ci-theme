@@ -407,12 +407,12 @@ function ci_render_project( $post_id ) {
 						<nav class="ci360-blog-breadcrumb-light" aria-label="Breadcrumb">
 							<a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a>
 							<span>/</span>
-							<a href="<?php echo esc_url( home_url( '/work/' ) ); ?>">Work</a>
+							<a href="<?php echo esc_url( ci_url( '/case-studies/' ) ); ?>">Case Studies</a>
 							<span>/</span>
 							<span><?php echo esc_html( $title ); ?></span>
 						</nav>
 						<div class="ci360-blog-kicker-light">
-							<span><?php echo esc_html( mb_strtoupper( $cat_name ) ); ?></span>
+							<span style="color:#ffffff !important; background:rgba(255,255,255,0.2) !important; border:1px solid rgba(255,255,255,0.3) !important; font-weight:700 !important;"><?php echo esc_html( mb_strtoupper( $cat_name ) ); ?></span>
 						</div>
 						<h1 class="ci360-hero-full-title"><?php echo esc_html( $title ); ?></h1>
 						<?php if ( ! empty( $headline ) ) : ?>
@@ -450,7 +450,7 @@ function ci_render_project( $post_id ) {
 						<div class="ci360-related-box">
 							<div class="ci360-related-header">
 								<h2>Featured Case Studies</h2>
-								<a href="<?php echo esc_url( home_url( '/work/' ) ); ?>" class="text-link">Explore all work <?php echo ci_arrow(); ?></a>
+								<a href="<?php echo esc_url( ci_url( '/case-studies/' ) ); ?>" class="text-link">Explore all case studies <?php echo ci_arrow(); ?></a>
 							</div>
 							<div class="ci360-related-grid articles-grid four-col">
 								<?php echo $related_cards; ?>
@@ -666,7 +666,6 @@ function ci_render_modern_blog_post( $post_id ) {
 					<?php if ( $prev_post ) : ?>
 						<a href="<?php echo esc_url( get_permalink( $prev_post->ID ) ); ?>" class="ci360-nav-card nav-prev">
 							<span class="nav-label">&larr; Previous Article</span>
-							<span class="nav-title"><?php echo esc_html( get_the_title( $prev_post->ID ) ); ?></span>
 						</a>
 					<?php else : ?>
 						<div class="ci360-nav-card nav-prev disabled"></div>
@@ -675,7 +674,6 @@ function ci_render_modern_blog_post( $post_id ) {
 					<?php if ( $next_post ) : ?>
 						<a href="<?php echo esc_url( get_permalink( $next_post->ID ) ); ?>" class="ci360-nav-card nav-next">
 							<span class="nav-label">Next Article &rarr;</span>
-							<span class="nav-title"><?php echo esc_html( get_the_title( $next_post->ID ) ); ?></span>
 						</a>
 					<?php endif; ?>
 				</nav>
@@ -757,7 +755,7 @@ function ci_render_modern_blog_post( $post_id ) {
 			<section class="ci360-blog-related-section wrap">
 				<div class="ci360-related-box">
 					<div class="section-heading">
-						<div class="section-label"><span>04</span><span>RELATED READS</span></div>
+						<?php echo ci_label( '', 'RELATED READS' ); ?>
 						<h2>Related Articles & Case Studies</h2>
 					</div>
 					<div class="articles-grid four-col">
@@ -942,7 +940,7 @@ function ci_render_footer() {
 						<li><a href="<?php echo esc_url( home_url( '/about/' ) ); ?>">ABOUT</a></li>
 						<li><a href="<?php echo esc_url( home_url( '/founders/' ) ); ?>">FOUNDERS</a></li>
 						<li><a href="<?php echo esc_url( home_url( '/services/' ) ); ?>">SERVICES</a></li>
-						<li><a href="<?php echo esc_url( home_url( '/work/' ) ); ?>">STORIES</a></li>
+						<li><a href="<?php echo esc_url( ci_url( '/case-studies/' ) ); ?>">CASE STUDIES</a></li>
 						<li><a href="<?php echo esc_url( home_url( '/insights/' ) ); ?>">BLOG</a></li>
 						<?php
 					}

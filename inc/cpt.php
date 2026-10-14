@@ -15,7 +15,7 @@ add_action( 'init', 'ci_register_content_types' );
 function ci_register_content_types() {
 	$types = array(
 		'ci_service'     => array( 'Services', 'Service', 'services', 'dashicons-screenoptions', true ),
-		'ci_project'     => array( 'Projects', 'Project', 'work', 'dashicons-portfolio', true ),
+		'ci_project'     => array( 'Projects', 'Project', 'case-study', 'dashicons-portfolio', true ),
 		'ci_insight'     => array( 'Insights', 'Insight', 'insights', 'dashicons-lightbulb', true ),
 		'ci_testimonial' => array( 'Testimonials', 'Testimonial', '', 'dashicons-format-quote', false ),
 		'ci_team'        => array( 'Team', 'Team member', '', 'dashicons-groups', false ),
