@@ -98,14 +98,10 @@ function mount(){controller?.abort();controller=new AbortController();const qd=$
      };
 
      if (!heroCollage._heroTimer) {
-       heroCollage.addEventListener('pointerenter', () => { isPaused = true; });
-       heroCollage.addEventListener('pointerleave', () => { isPaused = false; });
        heroCollage._heroTimer = setInterval(() => {
-         if (!isPaused) {
-           heroIdx = (heroIdx + 1) % frames.length;
-           updateFrames();
-         }
-       }, 3800);
+          heroIdx = (heroIdx + 1) % frames.length;
+          updateFrames();
+        }, 3800);
      }
    }
  }
