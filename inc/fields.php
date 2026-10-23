@@ -411,6 +411,7 @@ function ci_register_fields() {
 		'Team member',
 		array(
 			ci_t( 'team_role', 'Role' ),
+			ci_ta( 'team_bio', 'Description / Bio (shown on hover)', '', array( 'rows' => 4 ) ),
 			ci_f( 'image', 'team_photo', 'Member photo / portrait' ),
 			ci_f( 'true_false', 'team_is_founder', 'Is a founder (shown on Founders page)', 0 ),
 			ci_t( 'founder_role', 'Founder title', '', array( 'conditional_logic' => array( array( array( 'field' => 'field_ci_team_is_founder', 'operator' => '==', 'value' => '1' ) ) ) ) ),
