@@ -4301,7 +4301,7 @@ section.hero,
 
 
 /* ================================================================
-   TEAM SECTION — 4 CARDS PER ROW & (1. NAME -> 2. DESIGNATION -> 3. DESCRIPTION)
+   TEAM SECTION — 4 CARDS PER ROW & (1. NAME -> 2. DESIGNATION -> 3. THEN DESCRIPTION)
    ================================================================ */
 
 /* --- 1. Grid: Exactly 4 Cards Per Row on Desktop --- */
@@ -4380,7 +4380,7 @@ section.hero,
   box-shadow: 0 16px 36px rgba(2, 6, 23, 0.22) !important;
 }
 
-/* Crucial: static prevents image container from restricting overlay */
+/* Prevent image container from trapping the absolute overlay */
 .ct-team-grid .item--image,
 .ct-team-grid6 .item--image,
 .team-member-photo-wrap {
@@ -4460,19 +4460,24 @@ section.hero,
   visibility: visible !important;
 }
 
-/* --- 4. EXACT ORDER: 1. NAME -> 2. DESIGNATION -> 3. DESCRIPTION --- */
+/* --- 4. EXACT ORDER: 1. NAME -> 2. DESIGNATION -> 3. THEN DESCRIPTION --- */
 
-/* 1. NAME AT TOP */
+/* 1. NAME AT THE VERY TOP */
+.ct-team-grid .item--inner:hover .item--holder .item--title,
+.ct-team-grid6 .item--inner:hover .item--holder .item--title,
 .ct-team-grid .item--inner:hover .item--title,
 .ct-team-grid6 .item--inner:hover .item--title,
 .team-overlay-name {
   order: 1 !important;
+  position: static !important;
   color: #ffffff !important;
   font-size: 22px !important;
   font-weight: 700 !important;
   line-height: 1.25 !important;
   margin: 0 0 6px 0 !important;
   display: block !important;
+  width: 100% !important;
+  text-align: center !important;
 }
 
 .ct-team-grid .item--inner:hover .item--title a,
@@ -4481,24 +4486,32 @@ section.hero,
   text-decoration: none !important;
 }
 
-/* 2. DESIGNATION BELOW NAME */
+/* 2. DESIGNATION RIGHT BELOW NAME */
+.ct-team-grid .item--inner:hover .item--holder .item--position,
+.ct-team-grid6 .item--inner:hover .item--holder .item--position,
 .ct-team-grid .item--inner:hover .item--position,
 .ct-team-grid6 .item--inner:hover .item--position,
 .team-overlay-role {
   order: 2 !important;
+  position: static !important;
   color: #fcd12a !important;
-  font-size: 11px !important;
+  font-size: 11.5px !important;
   font-weight: 700 !important;
   text-transform: uppercase !important;
   letter-spacing: 0.12em !important;
   margin: 0 0 16px 0 !important;
   display: block !important;
+  width: 100% !important;
+  text-align: center !important;
 }
 
-/* 3. THEN DESCRIPTION */
+/* 3. THEN DESCRIPTION RIGHT BELOW DESIGNATION */
+.ct-team-grid .item--inner:hover .item--holder .item--meta,
+.ct-team-grid6 .item--inner:hover .item--holder .item--meta,
 .ct-team-grid .item--inner:hover .item--meta,
 .ct-team-grid6 .item--inner:hover .item--meta {
   order: 3 !important;
+  position: static !important;
   display: flex !important;
   flex-direction: column !important;
   align-items: center !important;
@@ -4509,6 +4522,7 @@ section.hero,
   transform: none !important;
   margin: 0 !important;
   padding: 0 !important;
+  text-align: center !important;
 }
 
 .ct-team-grid .item--inner:hover .item--desc,
@@ -4537,7 +4551,7 @@ section.hero,
   transform: translateY(0) !important;
 }
 
-/* Hide social icons / arrows so ONLY Name, Designation & Description appear */
+/* Hide social icons / arrows so ONLY Name, Designation & Description are visible */
 .ct-team-grid .item--social,
 .ct-team-grid6 .item--social,
 .ct-team-grid .item--inner:hover .item--social,
