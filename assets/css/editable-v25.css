@@ -4301,45 +4301,107 @@ section.hero,
 
 
 /* ================================================================
-   TEAM SECTION — FULL CARD HOVER OVERLAY (COVERS WHOLE CARD, NOT JUST IMAGE)
-   Applies to Consultio (.ct-team-grid, .ct-team-grid6) and CI360 (.team-member-card)
+   TEAM SECTION — 4 CARDS PER ROW & NAME AT TOP, THEN DESIGNATION
    ================================================================ */
 
-/* --- 1. Consultio Team Grid (Live on /about/) --- */
+/* --- 1. Grid: 4 Cards Per Row on Desktop --- */
+.ct-team-grid .ct-grid-inner,
+.ct-team-grid6 .ct-grid-inner {
+  display: flex !important;
+  flex-wrap: wrap !important;
+}
+
+@media (min-width: 992px) {
+  .ct-team-grid .ct-grid-inner > .grid-item,
+  .ct-team-grid6 .ct-grid-inner > .grid-item,
+  .ct-team-grid .grid-item.col-xl-4,
+  .ct-team-grid6 .grid-item.col-xl-4,
+  .ct-team-grid .grid-item.col-lg-4,
+  .ct-team-grid6 .grid-item.col-lg-4 {
+    flex: 0 0 25% !important;
+    max-width: 25% !important;
+    width: 25% !important;
+  }
+
+  .team-roster {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 24px !important;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 991px) {
+  .ct-team-grid .ct-grid-inner > .grid-item,
+  .ct-team-grid6 .ct-grid-inner > .grid-item,
+  .ct-team-grid .grid-item.col-xl-4,
+  .ct-team-grid6 .grid-item.col-xl-4 {
+    flex: 0 0 50% !important;
+    max-width: 50% !important;
+    width: 50% !important;
+  }
+
+  .team-roster {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 20px !important;
+  }
+}
+
+@media (max-width: 575px) {
+  .ct-team-grid .ct-grid-inner > .grid-item,
+  .ct-team-grid6 .ct-grid-inner > .grid-item {
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
+  .team-roster {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+}
+
+/* --- 2. Card Container --- */
 .ct-team-grid .item--inner,
-.ct-team-grid6 .item--inner {
+.ct-team-grid6 .item--inner,
+.team-member-card {
   position: relative !important;
   overflow: hidden !important;
   border-radius: 16px !important;
   cursor: pointer !important;
-  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease !important;
+  transition: transform 0.4s ease, box-shadow 0.4s ease !important;
 }
 
 .ct-team-grid .item--inner:hover,
-.ct-team-grid6 .item--inner:hover {
+.ct-team-grid6 .item--inner:hover,
+.team-member-card:hover {
   transform: translateY(-5px) !important;
   box-shadow: 0 16px 36px rgba(2, 6, 23, 0.22) !important;
 }
 
 /* Prevent image container from trapping the absolute overlay */
 .ct-team-grid .item--image,
-.ct-team-grid6 .item--image {
+.ct-team-grid6 .item--image,
+.team-member-photo-wrap {
   position: static !important;
   width: 100% !important;
   overflow: hidden !important;
 }
 
 .ct-team-grid .item--image img,
-.ct-team-grid6 .item--image img {
+.ct-team-grid6 .item--image img,
+.team-member-photo-wrap img {
   width: 100% !important;
   height: 100% !important;
   object-fit: cover !important;
   display: block !important;
-  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), filter 0.4s ease !important;
+  transition: transform 0.6s ease, filter 0.4s ease !important;
 }
 
 .ct-team-grid .item--inner:hover .item--image img,
-.ct-team-grid6 .item--inner:hover .item--image img {
+.ct-team-grid6 .item--inner:hover .item--image img,
+.team-member-card:hover .team-member-photo-wrap img {
   transform: scale(1.08) !important;
   filter: brightness(0.4) !important;
 }
@@ -4355,174 +4417,9 @@ section.hero,
   display: none;
 }
 
-/* FULL-CARD OVERLAY ON HOVER:
-   Covers the 100% FULL CARD (Top photo + bottom white box) seamlessly */
+/* --- 3. FULL CARD OVERLAY ON HOVER --- */
 .ct-team-grid .item--inner:hover .item--holder,
-.ct-team-grid6 .item--inner:hover .item--holder {
-  position: absolute !important;
-  inset: 0 !important;
-  top: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  bottom: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  background: linear-gradient(165deg, rgba(3, 10, 36, 0.97) 0%, rgba(6, 18, 58, 0.95) 60%, rgba(2, 6, 23, 0.98) 100%) !important;
-  backdrop-filter: blur(8px) !important;
-  -webkit-backdrop-filter: blur(8px) !important;
-  display: flex !important;
-  flex-direction: column !important;
-  justify-content: center !important;
-  align-items: center !important;
-  text-align: center !important;
-  padding: 30px 24px !important;
-  box-sizing: border-box !important;
-  border-radius: inherit !important;
-  z-index: 25 !important;
-  animation: ctTeamCardFadeIn 0.35s cubic-bezier(0.25, 1, 0.5, 1) forwards !important;
-}
-
-@keyframes ctTeamCardFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(12px) scale(0.98);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-/* Re-order elements nicely inside the full-card hover overlay:
-   1. Role (Gold badge)
-   2. Name (White bold title)
-   3. Meta (Bio description + Social icons) */
-.ct-team-grid .item--inner:hover .item--position,
-.ct-team-grid6 .item--inner:hover .item--position {
-  order: 1 !important;
-  color: #fcd12a !important;
-  font-size: 11px !important;
-  font-weight: 700 !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.12em !important;
-  margin: 0 0 8px 0 !important;
-  display: block !important;
-}
-
-.ct-team-grid .item--inner:hover .item--title,
-.ct-team-grid6 .item--inner:hover .item--title {
-  order: 2 !important;
-  color: #ffffff !important;
-  font-size: 22px !important;
-  font-weight: 700 !important;
-  line-height: 1.25 !important;
-  margin: 0 0 14px 0 !important;
-  display: block !important;
-}
-
-.ct-team-grid .item--inner:hover .item--title a,
-.ct-team-grid6 .item--inner:hover .item--title a {
-  color: #ffffff !important;
-  text-decoration: none !important;
-}
-
-.ct-team-grid .item--inner:hover .item--meta,
-.ct-team-grid6 .item--inner:hover .item--meta {
-  order: 3 !important;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-  width: 100% !important;
-  max-height: none !important;
-  opacity: 1 !important;
-  transform: none !important;
-  pointer-events: auto !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-.ct-team-grid .item--inner:hover .item--desc,
-.ct-team-grid6 .item--inner:hover .item--desc {
-  display: block !important;
-  color: #e2e8f0 !important;
-  font-size: 13.5px !important;
-  line-height: 1.65 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  text-align: center !important;
-  max-width: 95% !important;
-}
-
-.ct-team-grid .item--inner:hover .item--social,
-.ct-team-grid6 .item--inner:hover .item--social {
-  display: flex !important;
-  justify-content: center !important;
-  align-items: center !important;
-  gap: 10px !important;
-  margin-top: 18px !important;
-  padding: 0 !important;
-}
-
-.ct-team-grid .item--inner:hover .item--social a,
-.ct-team-grid6 .item--inner:hover .item--social a {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  width: 38px !important;
-  height: 38px !important;
-  border-radius: 50% !important;
-  background: rgba(255, 255, 255, 0.15) !important;
-  color: #ffffff !important;
-  text-decoration: none !important;
-  font-size: 14px !important;
-  transition: all 0.25s ease !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
-}
-
-.ct-team-grid .item--inner:hover .item--social a:hover,
-.ct-team-grid6 .item--inner:hover .item--social a:hover {
-  background: #fcd12a !important;
-  color: #0b1536 !important;
-  border-color: #fcd12a !important;
-  transform: translateY(-2px) scale(1.1) !important;
-}
-
-/* --- 2. CI360 Native Team Cards (.team-member-card) --- */
-.team-member-card {
-  position: relative !important;
-  cursor: pointer !important;
-  overflow: hidden !important;
-  border-radius: 16px !important;
-  transition: transform 0.35s ease, box-shadow 0.35s ease !important;
-}
-
-.team-member-card:hover {
-  transform: translateY(-5px) !important;
-  box-shadow: 0 16px 36px rgba(2, 6, 23, 0.2) !important;
-}
-
-/* Crucial: static prevents photo-wrap from restricting the overlay to only the photo */
-.team-member-photo-wrap {
-  position: static !important;
-  overflow: hidden !important;
-  border-radius: inherit !important;
-}
-
-.team-member-photo-wrap .team-member-photo {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover !important;
-  display: block !important;
-  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), filter 0.4s ease !important;
-}
-
-.team-member-card:hover .team-member-photo-wrap .team-member-photo {
-  transform: scale(1.08) !important;
-  filter: brightness(0.4) !important;
-}
-
-/* Full card overlay: covers entire card from top to bottom */
+.ct-team-grid6 .item--inner:hover .item--holder,
 .team-member-card .team-member-overlay {
   position: absolute !important;
   inset: 0 !important;
@@ -4540,18 +4437,91 @@ section.hero,
   justify-content: center !important;
   align-items: center !important;
   text-align: center !important;
-  padding: 30px 24px !important;
+  padding: 26px 20px !important;
   box-sizing: border-box !important;
+  border-radius: inherit !important;
+  z-index: 25 !important;
+  animation: ctTeamCardFadeIn 0.35s cubic-bezier(0.25, 1, 0.5, 1) forwards !important;
+}
+
+@keyframes ctTeamCardFadeIn {
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.team-member-card .team-member-overlay {
   opacity: 0 !important;
   visibility: hidden !important;
   transition: opacity 0.35s ease, visibility 0.35s ease !important;
-  z-index: 25 !important;
-  border-radius: inherit !important;
 }
 
 .team-member-card:hover .team-member-overlay {
   opacity: 1 !important;
   visibility: visible !important;
+}
+
+/* --- 4. ORDER: NAME AT TOP (1), THEN DESIGNATION (2), THEN DESCRIPTION (3) --- */
+
+/* 1. NAME AT TOP */
+.ct-team-grid .item--inner:hover .item--title,
+.ct-team-grid6 .item--inner:hover .item--title,
+.team-overlay-name {
+  order: 1 !important;
+  color: #ffffff !important;
+  font-size: 21px !important;
+  font-weight: 700 !important;
+  line-height: 1.25 !important;
+  margin: 0 0 6px 0 !important;
+  display: block !important;
+}
+
+.ct-team-grid .item--inner:hover .item--title a,
+.ct-team-grid6 .item--inner:hover .item--title a {
+  color: #ffffff !important;
+  text-decoration: none !important;
+}
+
+/* 2. THEN DESIGNATION */
+.ct-team-grid .item--inner:hover .item--position,
+.ct-team-grid6 .item--inner:hover .item--position,
+.team-overlay-role {
+  order: 2 !important;
+  color: #fcd12a !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.12em !important;
+  margin: 0 0 14px 0 !important;
+  display: block !important;
+}
+
+/* 3. THEN DESCRIPTION */
+.ct-team-grid .item--inner:hover .item--meta,
+.ct-team-grid6 .item--inner:hover .item--meta {
+  order: 3 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  max-height: none !important;
+  opacity: 1 !important;
+  transform: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.ct-team-grid .item--inner:hover .item--desc,
+.ct-team-grid6 .item--inner:hover .item--desc,
+.team-overlay-bio {
+  display: block !important;
+  color: #e2e8f0 !important;
+  font-size: 13px !important;
+  line-height: 1.6 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: center !important;
+  max-width: 95% !important;
 }
 
 .team-member-overlay-inner {
@@ -4567,27 +4537,37 @@ section.hero,
   transform: translateY(0) !important;
 }
 
-.team-overlay-role {
-  font-size: 11px !important;
-  font-weight: 700 !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.12em !important;
-  color: #fcd12a !important;
-  display: block !important;
-  margin-bottom: 8px !important;
+/* 4. Social Links (optional at bottom) */
+.ct-team-grid .item--inner:hover .item--social,
+.ct-team-grid6 .item--inner:hover .item--social {
+  order: 4 !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 10px !important;
+  margin-top: 16px !important;
+  padding: 0 !important;
 }
 
-.team-overlay-name {
-  font-size: 22px !important;
-  font-weight: 700 !important;
+.ct-team-grid .item--inner:hover .item--social a,
+.ct-team-grid6 .item--inner:hover .item--social a {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 50% !important;
+  background: rgba(255, 255, 255, 0.15) !important;
   color: #ffffff !important;
-  margin-bottom: 12px !important;
-  display: block !important;
+  font-size: 13px !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  transition: all 0.25s ease !important;
 }
 
-.team-overlay-bio {
-  font-size: 13.5px !important;
-  line-height: 1.65 !important;
-  color: #e2e8f0 !important;
-  margin: 0 !important;
+.ct-team-grid .item--inner:hover .item--social a:hover,
+.ct-team-grid6 .item--inner:hover .item--social a:hover {
+  background: #fcd12a !important;
+  color: #0b1536 !important;
+  border-color: #fcd12a !important;
+  transform: translateY(-2px) scale(1.1) !important;
 }
