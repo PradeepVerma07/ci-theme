@@ -418,8 +418,12 @@ function ci_s_about_team( $s ) {
 				'Bhumi Chabbra' => 'Bhumi, the maestro behind our US operations, orchestrates digital marketing brilliance with a touch of American flair. Leading with precision and panache, she steers our digital ship to conquer new horizons in the dynamic landscape of the United States.',
 				'John Seaman' => 'As Technology Head at CI360 Degrees, John Seaman is a visionary leader who drives the integration of cutting-edge technology into the company\'s core offerings. With a deep understanding of the ever-evolving digital landscape, John ensures that CI360 Degrees remains at the forefront of innovation.',
 				'Arjun Kumar' => 'Arjun Kumar is a brand strategy consultant. Post beginning his career in advertising, he has been a Brand Manager with The Times of India, The Economic Times and CNN-IBN.',
-				'Mansi Bagdai' => 'Mansi guides CI360 Degrees\' strategic direction, turning market insight into clear growth plans. Her steady focus on data and execution keeps our expansion on track.',
-				'Manan Dhingra' => 'Manan Dhingra leads design at CI360Degrees, shaping bold, story-driven visuals that connect and convert across all brand touchpoints.',
+				'Mansi Bagdai' => 'Shapes brand direction and turns ambitious goals into measurable growth.',
+				'Manan Dhingra' => 'Transforms strategy into distinctive ideas, campaigns and visual stories.',
+				'Aneri Shah' => 'Builds thoughtful brand narratives with clarity, craft and cultural relevance.',
+				'Maryanne deSousa' => 'Brings campaigns to life through bold design, motion and memorable edits.',
+				'Maryanne de Sousa' => 'Brings campaigns to life through bold design, motion and memorable edits.',
+				'Harshada' => 'Improves visibility through search strategy, content insights and technical precision.',
 				'Arushi Singh' => 'Arushi crafts data-driven social media strategies that elevate brand presence and engagement.',
 				'Shalini Shingari' => 'A seasoned digital marketer with over 20 years of experience in growth marketing, business strategy, and digital transformation.',
 				'Aarya Parsodkar' => 'Aarya is a graphic designer with a thoughtful and practical approach to creative visual communication.',
@@ -428,8 +432,14 @@ function ci_s_about_team( $s ) {
 		}
 
 		$photo = $src ? '<img class="team-member-photo" src="' . esc_url( $src ) . '" alt="' . esc_attr( $name ) . '" loading="lazy" />' : '<div class="team-photo-fallback"><span>' . esc_html( mb_substr( $name, 0, 2 ) ) . '</span></div>';
-		$bio_overlay = $bio ? '<div class="team-member-overlay"><div class="team-member-overlay-inner"><span class="team-overlay-role">' . ci_e( ci_get( 'team_role', $m->ID ) ) . '</span><p class="team-overlay-bio">' . ci_e( $bio ) . '</p></div></div>' : '';
-		$team .= '<div class="team-member-card" data-reveal><div class="team-member-photo-wrap">' . $photo . $bio_overlay . '</div><div class="team-member-info"><h3>' . ci_e( $name ) . '</h3><p' . ci_s_text_size_attr( $s ) . '>' . ci_e( ci_get( 'team_role', $m->ID ) ) . '</p></div></div>';
+		$team .= '<div class="team-member-card" data-reveal>'
+			. '<div class="team-member-photo-wrap">' . $photo . '</div>'
+			. '<div class="team-member-info">'
+			. '<h3 class="team-member-name">' . ci_e( $name ) . '</h3>'
+			. '<span class="team-member-role">' . ci_e( ci_get( 'team_role', $m->ID ) ) . '</span>'
+			. ( $bio ? '<p class="team-member-desc">' . ci_e( $bio ) . '</p>' : '' )
+			. '</div>'
+			. '</div>';
 	}
 	$anchor = $s['anchor'] ? ' id="' . esc_attr( $s['anchor'] ) . '"' : '';
 	return '<section class="team-section section wrap"' . $anchor . '><div class="section-heading heading-row">' . ci_s_label( $s ) . '<h2 data-reveal' . ci_s_heading_size_attr( $s ) . '>' . ci_html( $s['heading'] ) . '</h2><p' . ci_s_text_size_attr( $s ) . '>' . ci_e( $s['intro'] ) . '</p></div><div class="team-roster">' . $team . '</div></section>';
