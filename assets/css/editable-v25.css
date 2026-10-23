@@ -4301,10 +4301,10 @@ section.hero,
 
 
 /* ================================================================
-   TEAM SECTION — 4 CARDS PER ROW & NAME AT TOP, THEN DESIGNATION
+   TEAM SECTION — 4 CARDS PER ROW & (1. NAME -> 2. DESIGNATION -> 3. DESCRIPTION)
    ================================================================ */
 
-/* --- 1. Grid: 4 Cards Per Row on Desktop --- */
+/* --- 1. Grid: Exactly 4 Cards Per Row on Desktop --- */
 .ct-team-grid .ct-grid-inner,
 .ct-team-grid6 .ct-grid-inner {
   display: flex !important;
@@ -4362,7 +4362,7 @@ section.hero,
   }
 }
 
-/* --- 2. Card Container --- */
+/* --- 2. Card Container & Photo --- */
 .ct-team-grid .item--inner,
 .ct-team-grid6 .item--inner,
 .team-member-card {
@@ -4380,7 +4380,7 @@ section.hero,
   box-shadow: 0 16px 36px rgba(2, 6, 23, 0.22) !important;
 }
 
-/* Prevent image container from trapping the absolute overlay */
+/* Crucial: static prevents image container from restricting overlay */
 .ct-team-grid .item--image,
 .ct-team-grid6 .item--image,
 .team-member-photo-wrap {
@@ -4460,7 +4460,7 @@ section.hero,
   visibility: visible !important;
 }
 
-/* --- 4. ORDER: NAME AT TOP (1), THEN DESIGNATION (2), THEN DESCRIPTION (3) --- */
+/* --- 4. EXACT ORDER: 1. NAME -> 2. DESIGNATION -> 3. DESCRIPTION --- */
 
 /* 1. NAME AT TOP */
 .ct-team-grid .item--inner:hover .item--title,
@@ -4468,7 +4468,7 @@ section.hero,
 .team-overlay-name {
   order: 1 !important;
   color: #ffffff !important;
-  font-size: 21px !important;
+  font-size: 22px !important;
   font-weight: 700 !important;
   line-height: 1.25 !important;
   margin: 0 0 6px 0 !important;
@@ -4481,7 +4481,7 @@ section.hero,
   text-decoration: none !important;
 }
 
-/* 2. THEN DESIGNATION */
+/* 2. DESIGNATION BELOW NAME */
 .ct-team-grid .item--inner:hover .item--position,
 .ct-team-grid6 .item--inner:hover .item--position,
 .team-overlay-role {
@@ -4491,7 +4491,7 @@ section.hero,
   font-weight: 700 !important;
   text-transform: uppercase !important;
   letter-spacing: 0.12em !important;
-  margin: 0 0 14px 0 !important;
+  margin: 0 0 16px 0 !important;
   display: block !important;
 }
 
@@ -4516,8 +4516,8 @@ section.hero,
 .team-overlay-bio {
   display: block !important;
   color: #e2e8f0 !important;
-  font-size: 13px !important;
-  line-height: 1.6 !important;
+  font-size: 13.5px !important;
+  line-height: 1.65 !important;
   margin: 0 !important;
   padding: 0 !important;
   text-align: center !important;
@@ -4537,37 +4537,18 @@ section.hero,
   transform: translateY(0) !important;
 }
 
-/* 4. Social Links (optional at bottom) */
+/* Hide social icons / arrows so ONLY Name, Designation & Description appear */
+.ct-team-grid .item--social,
+.ct-team-grid6 .item--social,
 .ct-team-grid .item--inner:hover .item--social,
-.ct-team-grid6 .item--inner:hover .item--social {
-  order: 4 !important;
-  display: flex !important;
-  justify-content: center !important;
-  align-items: center !important;
-  gap: 10px !important;
-  margin-top: 16px !important;
-  padding: 0 !important;
-}
-
-.ct-team-grid .item--inner:hover .item--social a,
-.ct-team-grid6 .item--inner:hover .item--social a {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  width: 36px !important;
-  height: 36px !important;
-  border-radius: 50% !important;
-  background: rgba(255, 255, 255, 0.15) !important;
-  color: #ffffff !important;
-  font-size: 13px !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
-  transition: all 0.25s ease !important;
-}
-
-.ct-team-grid .item--inner:hover .item--social a:hover,
-.ct-team-grid6 .item--inner:hover .item--social a:hover {
-  background: #fcd12a !important;
-  color: #0b1536 !important;
-  border-color: #fcd12a !important;
-  transform: translateY(-2px) scale(1.1) !important;
+.ct-team-grid6 .item--inner:hover .item--social,
+.team-overlay-social,
+.ct-team-grid [class*="arrow"],
+.ct-team-grid6 [class*="arrow"],
+.ct-team-grid .item--arrow,
+.ct-team-grid6 .item--arrow {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
 }
