@@ -4301,206 +4301,278 @@ section.hero,
 
 
 /* ================================================================
-   TEAM SECTION — DESIGN MATCH: DARK NAVY CARD + CYAN ROLE + ACCENT LINE + VISIBLE DESC
-   (Matches reference design exactly, arrow removed)
-   Applies to Consultio (.ct-team-grid, .ct-team-grid6) and CI360 (.team-member-card)
+   TEAM SECTION — FULL CARD HOVER OVERLAY (DESCRIPTION ON WHOLE CARD)
+   Applies to both Consultio (.ct-team-grid, .ct-team-grid6) and CI360 (.team-member-card)
    ================================================================ */
 
-/* Equal height grid layout */
-.ct-team-grid6 .ct-grid-inner,
-.ct-team-grid .ct-grid-inner {
-  display: flex !important;
-  flex-wrap: wrap !important;
-}
-
-.ct-team-grid6 .grid-item,
-.ct-team-grid .grid-item {
-  display: flex !important;
-  margin-bottom: 30px !important;
-}
-
-/* Card container */
+/* --- 1. Consultio Team Grid (Live on /about/) --- */
 .ct-team-grid .item--inner,
-.ct-team-grid6 .item--inner,
-.team-member-card {
+.ct-team-grid6 .item--inner {
   position: relative !important;
-  display: flex !important;
-  flex-direction: column !important;
-  width: 100% !important;
-  height: 100% !important;
-  background: #061033 !important;
-  border: 1px solid rgba(56, 189, 248, 0.22) !important;
-  border-radius: 18px !important;
   overflow: hidden !important;
-  box-shadow: 0 10px 30px rgba(3, 10, 36, 0.25) !important;
-  transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.35s ease, border-color 0.35s ease !important;
+  border-radius: 14px !important;
+  cursor: pointer !important;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease !important;
 }
 
 .ct-team-grid .item--inner:hover,
-.ct-team-grid6 .item--inner:hover,
-.team-member-card:hover {
-  transform: translateY(-6px) !important;
-  border-color: rgba(0, 210, 255, 0.5) !important;
-  box-shadow: 0 18px 40px rgba(0, 210, 255, 0.12), 0 8px 24px rgba(2, 6, 23, 0.4) !important;
+.ct-team-grid6 .item--inner:hover {
+  transform: translateY(-5px) !important;
+  box-shadow: 0 16px 36px rgba(2, 6, 23, 0.22) !important;
 }
 
-/* Image container */
 .ct-team-grid .item--image,
-.ct-team-grid6 .item--image,
-.team-member-photo-wrap {
+.ct-team-grid6 .item--image {
   position: relative !important;
-  width: 100% !important;
-  height: 280px !important;
   overflow: hidden !important;
-  background: #040a24 !important;
-  border-radius: 18px 18px 0 0 !important;
+  width: 100% !important;
 }
 
 .ct-team-grid .item--image img,
-.ct-team-grid6 .item--image img,
-.team-member-photo-wrap img {
+.ct-team-grid6 .item--image img {
   width: 100% !important;
   height: 100% !important;
   object-fit: cover !important;
-  object-position: top center !important;
   display: block !important;
-  transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1) !important;
+  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), filter 0.4s ease !important;
 }
 
 .ct-team-grid .item--inner:hover .item--image img,
-.ct-team-grid6 .item--inner:hover .item--image img,
-.team-member-card:hover .team-member-photo-wrap img {
-  transform: scale(1.05) !important;
+.ct-team-grid6 .item--inner:hover .item--image img {
+  transform: scale(1.08) !important;
+  filter: brightness(0.4) !important;
 }
 
-/* Subtle gradient blend from bottom of photo into dark card body */
-.ct-team-grid .item--image::after,
-.ct-team-grid6 .item--image::after,
-.team-member-photo-wrap::after {
-  content: "" !important;
-  position: absolute !important;
-  inset: 0 !important;
-  background: linear-gradient(to bottom, rgba(6, 16, 51, 0) 65%, rgba(6, 16, 51, 0.85) 100%) !important;
-  pointer-events: none !important;
-}
-
-/* Content Holder */
-.ct-team-grid .item--holder,
-.ct-team-grid6 .item--holder,
-.team-member-info {
-  background: transparent !important;
-  padding: 20px 22px 24px 22px !important;
-  display: flex !important;
-  flex-direction: column !important;
-  text-align: left !important;
-  flex-grow: 1 !important;
-  position: relative !important;
-  inset: auto !important;
-  transform: none !important;
-  border-radius: 0 !important;
-}
-
+/* Default unhovered holder: title and position at bottom */
 .ct-team-grid .item--holder:before,
 .ct-team-grid6 .item--holder:before {
   display: none !important;
 }
 
-/* Name / Title */
-.ct-team-grid .item--title,
-.ct-team-grid6 .item--title,
-.team-member-info h3,
-.team-member-name {
-  font-family: inherit !important;
-  font-size: 21px !important;
-  font-weight: 700 !important;
-  color: #ffffff !important;
-  margin: 0 0 6px 0 !important;
-  line-height: 1.25 !important;
-  text-align: left !important;
+.ct-team-grid .item--meta,
+.ct-team-grid6 .item--meta {
+  display: none;
 }
 
-.ct-team-grid .item--title a,
-.ct-team-grid6 .item--title a {
+/* --- FULL CARD HOVER OVERLAY: Covers the ENTIRE CARD (Top to Bottom) --- */
+.ct-team-grid .item--inner:hover .item--holder,
+.ct-team-grid6 .item--inner:hover .item--holder {
+  position: absolute !important;
+  inset: 0 !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  background: linear-gradient(165deg, rgba(3, 10, 36, 0.96) 0%, rgba(6, 18, 58, 0.94) 60%, rgba(2, 6, 23, 0.98) 100%) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  text-align: center !important;
+  padding: 30px 24px !important;
+  box-sizing: border-box !important;
+  border-radius: inherit !important;
+  z-index: 10 !important;
+  animation: ctTeamOverlayFadeIn 0.35s cubic-bezier(0.25, 1, 0.5, 1) forwards !important;
+}
+
+@keyframes ctTeamOverlayFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Re-order elements nicely inside the full-card hover overlay:
+   1. Role (Gold badge)
+   2. Name (White bold title)
+   3. Meta (Bio description + Social icons) */
+.ct-team-grid .item--inner:hover .item--position,
+.ct-team-grid6 .item--inner:hover .item--position {
+  order: 1 !important;
+  color: #fcd12a !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.12em !important;
+  margin: 0 0 8px 0 !important;
+  display: block !important;
+}
+
+.ct-team-grid .item--inner:hover .item--title,
+.ct-team-grid6 .item--inner:hover .item--title {
+  order: 2 !important;
+  color: #ffffff !important;
+  font-size: 22px !important;
+  font-weight: 700 !important;
+  line-height: 1.25 !important;
+  margin: 0 0 14px 0 !important;
+  display: block !important;
+}
+
+.ct-team-grid .item--inner:hover .item--title a,
+.ct-team-grid6 .item--inner:hover .item--title a {
   color: #ffffff !important;
   text-decoration: none !important;
 }
 
-/* Role / Position */
-.ct-team-grid .item--position,
-.ct-team-grid6 .item--position,
-.team-member-info .team-member-role,
-.team-member-role {
-  font-family: inherit !important;
-  font-size: 14px !important;
-  font-weight: 600 !important;
-  color: #00d2ff !important;
-  text-transform: none !important;
-  letter-spacing: normal !important;
-  margin: 0 0 14px 0 !important;
-  text-align: left !important;
-  display: block !important;
-}
-
-/* Cyan accent divider line under role */
-.ct-team-grid .item--position::after,
-.ct-team-grid6 .item--position::after,
-.team-member-info .team-member-role::after,
-.team-member-role::after {
-  content: "" !important;
-  display: block !important;
-  width: 32px !important;
-  height: 2px !important;
-  background: #00d2ff !important;
-  margin-top: 10px !important;
-  border-radius: 2px !important;
-}
-
-/* Meta container & Bio Description - VISIBLE ON CARD */
-.ct-team-grid .item--meta,
-.ct-team-grid6 .item--meta {
-  display: block !important;
-  opacity: 1 !important;
-  visibility: visible !important;
+.ct-team-grid .item--inner:hover .item--meta,
+.ct-team-grid6 .item--inner:hover .item--meta {
+  order: 3 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
   max-height: none !important;
+  opacity: 1 !important;
   transform: none !important;
   pointer-events: auto !important;
   margin: 0 !important;
   padding: 0 !important;
 }
 
-.ct-team-grid .item--desc,
-.ct-team-grid6 .item--desc,
-.team-member-info .team-member-desc,
-.team-member-desc {
-  font-family: inherit !important;
+.ct-team-grid .item--inner:hover .item--desc,
+.ct-team-grid6 .item--inner:hover .item--desc {
   display: block !important;
-  color: #cbd5e1 !important;
+  color: #e2e8f0 !important;
   font-size: 13.5px !important;
-  font-weight: 400 !important;
-  line-height: 1.55 !important;
+  line-height: 1.65 !important;
   margin: 0 !important;
   padding: 0 !important;
-  text-align: left !important;
+  text-align: center !important;
+  max-width: 95% !important;
 }
 
-/* ================================================================
-   REMOVE ARROWS & BUTTONS AS REQUESTED ("remove aero")
-   ================================================================ */
-.ct-team-grid .item--social,
-.ct-team-grid6 .item--social,
-.ct-team-grid .item--arrow,
-.ct-team-grid6 .item--arrow,
-.ct-team-grid .arrow,
-.ct-team-grid6 .arrow,
-.ct-team-grid [class*="arrow"],
-.ct-team-grid6 [class*="arrow"],
-.team-member-card [class*="arrow"],
-.ct-team-grid .item--readmore,
-.ct-team-grid6 .item--readmore,
-.ct-team-grid .item--button,
-.ct-team-grid6 .item--button {
-  display: none !important;
-  visibility: hidden !important;
+.ct-team-grid .item--inner:hover .item--social,
+.ct-team-grid6 .item--inner:hover .item--social {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 10px !important;
+  margin-top: 18px !important;
+  padding: 0 !important;
+}
+
+.ct-team-grid .item--inner:hover .item--social a,
+.ct-team-grid6 .item--inner:hover .item--social a {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 38px !important;
+  height: 38px !important;
+  border-radius: 50% !important;
+  background: rgba(255, 255, 255, 0.15) !important;
+  color: #ffffff !important;
+  text-decoration: none !important;
+  font-size: 14px !important;
+  transition: all 0.25s ease !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.ct-team-grid .item--inner:hover .item--social a:hover,
+.ct-team-grid6 .item--inner:hover .item--social a:hover {
+  background: #fcd12a !important;
+  color: #0b1536 !important;
+  border-color: #fcd12a !important;
+  transform: translateY(-2px) scale(1.1) !important;
+}
+
+/* --- 2. CI360 Native Team Cards (.team-member-card) --- */
+.team-member-card {
+  position: relative !important;
+  cursor: pointer !important;
+  overflow: hidden !important;
+  border-radius: 14px !important;
+}
+
+.team-member-photo-wrap {
+  position: relative !important;
+  overflow: hidden !important;
+  border-radius: inherit !important;
+}
+
+.team-member-photo-wrap .team-member-photo {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  display: block !important;
+  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), filter 0.4s ease !important;
+}
+
+.team-member-card:hover .team-member-photo-wrap .team-member-photo {
+  transform: scale(1.08) !important;
+  filter: brightness(0.4) !important;
+}
+
+.team-member-overlay {
+  position: absolute !important;
+  inset: 0 !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  background: linear-gradient(165deg, rgba(3, 10, 36, 0.96) 0%, rgba(6, 18, 58, 0.94) 60%, rgba(2, 6, 23, 0.98) 100%) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 28px 22px !important;
+  box-sizing: border-box !important;
   opacity: 0 !important;
-  pointer-events: none !important;
+  visibility: hidden !important;
+  transition: opacity 0.35s ease, visibility 0.35s ease !important;
+  z-index: 10 !important;
+  border-radius: inherit !important;
+}
+
+.team-member-card:hover .team-member-overlay {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.team-member-overlay-inner {
+  text-align: center !important;
+  transform: translateY(12px) !important;
+  transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1) !important;
+}
+
+.team-member-card:hover .team-member-overlay-inner {
+  transform: translateY(0) !important;
+}
+
+.team-overlay-role {
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.12em !important;
+  color: #fcd12a !important;
+  display: block !important;
+  margin-bottom: 6px !important;
+}
+
+.team-overlay-name {
+  font-size: 22px !important;
+  font-weight: 700 !important;
+  color: #ffffff !important;
+  margin-bottom: 12px !important;
+  display: block !important;
+}
+
+.team-overlay-bio {
+  font-size: 13.5px !important;
+  line-height: 1.65 !important;
+  color: #e2e8f0 !important;
+  margin: 0 !important;
 }
