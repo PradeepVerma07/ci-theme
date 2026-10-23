@@ -428,8 +428,8 @@ function ci_s_about_team( $s ) {
 		}
 
 		$photo = $src ? '<img class="team-member-photo" src="' . esc_url( $src ) . '" alt="' . esc_attr( $name ) . '" loading="lazy" />' : '<div class="team-photo-fallback"><span>' . esc_html( mb_substr( $name, 0, 2 ) ) . '</span></div>';
-		$bio_overlay = $bio ? '<div class="team-member-overlay"><div class="team-member-overlay-inner"><span class="team-overlay-role">' . ci_e( ci_get( 'team_role', $m->ID ) ) . '</span><p class="team-overlay-bio">' . ci_e( $bio ) . '</p></div></div>' : '';
-		$team .= '<div class="team-member-card" data-reveal><div class="team-member-photo-wrap">' . $photo . $bio_overlay . '</div><div class="team-member-info"><h3>' . ci_e( $name ) . '</h3><p' . ci_s_text_size_attr( $s ) . '>' . ci_e( ci_get( 'team_role', $m->ID ) ) . '</p></div></div>';
+		$bio_overlay = $bio ? '<div class="team-member-overlay"><div class="team-member-overlay-inner"><span class="team-overlay-role">' . ci_e( ci_get( 'team_role', $m->ID ) ) . '</span><h4 class="team-overlay-name">' . ci_e( $name ) . '</h4><p class="team-overlay-bio">' . ci_e( $bio ) . '</p></div></div>' : '';
+		$team .= '<div class="team-member-card" data-reveal><div class="team-member-photo-wrap">' . $photo . '</div><div class="team-member-info"><h3>' . ci_e( $name ) . '</h3><p' . ci_s_text_size_attr( $s ) . '>' . ci_e( ci_get( 'team_role', $m->ID ) ) . '</p></div>' . $bio_overlay . '</div>';
 	}
 	$anchor = $s['anchor'] ? ' id="' . esc_attr( $s['anchor'] ) . '"' : '';
 	return '<section class="team-section section wrap"' . $anchor . '><div class="section-heading heading-row">' . ci_s_label( $s ) . '<h2 data-reveal' . ci_s_heading_size_attr( $s ) . '>' . ci_html( $s['heading'] ) . '</h2><p' . ci_s_text_size_attr( $s ) . '>' . ci_e( $s['intro'] ) . '</p></div><div class="team-roster">' . $team . '</div></section>';
